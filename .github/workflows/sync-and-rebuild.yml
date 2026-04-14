@@ -1,0 +1,306 @@
+# .github/workflows/simple-sync.yml
+# Generic sync workflow for smaller repos: start-local, protections-artifacts.
+# Syncs fork from upstream, rebuilds AGENT-INDEX.md and agent-manifest.txt.
+# Copy this file into each repo's .github/workflows/ and set the env vars below.
+#
+# Repos:
+#   brettw989/start-local   -> upstream: elastic/start-local
+#   brettw989/protections-artifacts -> upstream: elastic/protections-artifacts
+
+name: Sync Fork & Rebuild Indexes
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 6 AM UTC
+  workflow_dispatch:
+    inputs:
+      upstream_repo:
+        description: 'Override upstream repo (e.g. elastic/start-local)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+# ── Configure per-repo ──
+# Set these as repository variables or edit directly:
+env:
+  # Detected automatically from the repo name
+  REPO_NAME: ${{ github.event.repository.name }}
+
+jobs:
+  sync-and-rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine upstream
+        id: upstream
+        run: |
+          set -euo pipefail
+          REPO_NAME="${{ env.REPO_NAME }}"
+          OVERRIDE="${{ inputs.upstream_repo }}"
+
+          if [ -n "$OVERRIDE" ]; then
+            echo "upstream=${OVERRIDE}" >> "$GITHUB_OUTPUT"
+          else
+            echo "upstream=elastic/${REPO_NAME}" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Using upstream: $(cat "$GITHUB_OUTPUT" | grep upstream)"
+
+      - name: Sync fork from upstream
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          UPSTREAM="${{ steps.upstream.outputs.upstream }}"
+          echo "::group::Syncing fork from ${UPSTREAM}"
+          gh repo sync "${{ github.repository }}" --source "${UPSTREAM}" --force || {
+            echo "::warning::gh repo sync failed — upstream may be unavailable or fork is up to date"
+          }
+          echo "::endgroup::"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Rebuild AGENT-INDEX.md and agent-manifest.txt
+        run: |
+          set -euo pipefail
+
+          REPO_NAME="${{ env.REPO_NAME }}"
+          INDEX_FILE="AGENT-INDEX.md"
+          MANIFEST_FILE="agent-manifest.txt"
+          TEMP_INDEX=$(mktemp)
+          TEMP_MANIFEST=$(mktemp)
+
+          echo "Building index for repo: ${REPO_NAME}"
+
+          # ── Count all relevant files ──
+          TOTAL_MD=$(find . -type f -name "*.md" \
+            ! -name "AGENT-INDEX.md" \
+            ! -path "./.git/*" | wc -l | tr -d ' ')
+
+          TOTAL_ALL=$(find . -type f \
+            ! -name "AGENT-INDEX.md" \
+            ! -name "agent-manifest.txt" \
+            ! -path "./.git/*" \
+            ! -path "./.github/*" \
+            \( -name "*.md" -o -name "*.yml" -o -name "*.yaml" -o -name "*.json" -o -name "*.toml" -o -name "*.txt" -o -name "*.sh" -o -name "*.py" -o -name "*.rb" -o -name "*.conf" -o -name "*.cfg" -o -name "*.env.example" -o -name "*.ndjson" -o -name "Makefile" -o -name "Dockerfile" -o -name "*.tf" \) \
+            | wc -l | tr -d ' ')
+
+          # ══════════════════════════════════════════════════════════════
+          # protections-artifacts: count rules by directory/OS
+          # ══════════════════════════════════════════════════════════════
+          if [ "$REPO_NAME" = "protections-artifacts" ]; then
+            {
+              echo "# Elastic Protections Artifacts Index"
+              echo "Generated for agent-assisted navigation."
+              echo ""
+              echo "## Overview"
+              echo "- Repository: elastic/protections-artifacts"
+              echo "- Purpose: Pre-built detection rules, protections, and artifacts for Elastic Security"
+              echo "- Total documentation files: ${TOTAL_MD}"
+              echo ""
+            } > "$TEMP_INDEX"
+
+            # ── Rules by directory ──
+            if [ -d "rules" ] || [ -d "yara-rules" ] || [ -d "ransomware" ]; then
+              echo "## Rules Summary" >> "$TEMP_INDEX"
+              echo "" >> "$TEMP_INDEX"
+
+              for rule_dir in rules yara-rules ransomware fleet_packages; do
+                if [ -d "$rule_dir" ]; then
+                  DIR_TOTAL=$(find "$rule_dir" -type f | wc -l | tr -d ' ')
+                  echo "### \`${rule_dir}/\` (${DIR_TOTAL} files)" >> "$TEMP_INDEX"
+
+                  # List subdirectories with counts
+                  TEMP_SUBDIRS=$(mktemp)
+                  find "$rule_dir" -mindepth 1 -maxdepth 1 -type d | sort > "$TEMP_SUBDIRS"
+                  if [ -s "$TEMP_SUBDIRS" ]; then
+                    while IFS= read -r subdir; do
+                      [ -z "$subdir" ] && continue
+                      SUB_COUNT=$(find "$subdir" -type f | wc -l | tr -d ' ')
+                      SUB_NAME=$(basename "$subdir")
+                      echo "- \`${SUB_NAME}/\`: ${SUB_COUNT} files" >> "$TEMP_INDEX"
+                    done < "$TEMP_SUBDIRS"
+                  else
+                    # No subdirs — list files directly
+                    find "$rule_dir" -maxdepth 1 -type f | sort | while IFS= read -r f; do
+                      echo "- $(basename "$f")" >> "$TEMP_INDEX"
+                    done
+                  fi
+                  rm -f "$TEMP_SUBDIRS"
+                  echo "" >> "$TEMP_INDEX"
+                fi
+              done
+            fi
+
+            # ── Documentation files ──
+            {
+              echo "## Documentation Files"
+              echo ""
+            } >> "$TEMP_INDEX"
+
+            find . -type f -name "*.md" \
+              ! -name "AGENT-INDEX.md" \
+              ! -path "./.git/*" | sort | while IFS= read -r f; do
+              rel="${f#./}"
+              echo "- ${rel}" >> "$TEMP_INDEX"
+            done
+            echo "" >> "$TEMP_INDEX"
+
+            # ── Manifest: doc files + rule metadata files ──
+            {
+              find . -type f -name "*.md" ! -name "AGENT-INDEX.md" ! -path "./.git/*"
+              find . -type f \( -name "*.yml" -o -name "*.yaml" -o -name "*.json" -o -name "*.toml" \) \
+                ! -name "agent-manifest.txt" ! -path "./.git/*" ! -path "./.github/*"
+            } | sort -u > "$TEMP_MANIFEST"
+
+          # ══════════════════════════════════════════════════════════════
+          # start-local: list all files with descriptions
+          # ══════════════════════════════════════════════════════════════
+          elif [ "$REPO_NAME" = "start-local" ]; then
+            {
+              echo "# Elastic Start-Local Index"
+              echo "Generated for agent-assisted navigation."
+              echo ""
+              echo "## Overview"
+              echo "- Repository: elastic/start-local"
+              echo "- Purpose: Quick-start scripts and configuration for running Elasticsearch and Kibana locally"
+              echo "- Total text files: ${TOTAL_ALL}"
+              echo ""
+              echo "## File Listing"
+              echo ""
+            } > "$TEMP_INDEX"
+
+            # ── Group by directory ──
+            TEMP_DIRS=$(mktemp)
+            find . -type f \
+              ! -name "AGENT-INDEX.md" \
+              ! -name "agent-manifest.txt" \
+              ! -path "./.git/*" \
+              ! -path "./.github/*" \
+              -printf '%h\n' | sort -u > "$TEMP_DIRS"
+
+            while IFS= read -r dir; do
+              [ -z "$dir" ] && continue
+              rel_dir="${dir#./}"
+              [ "$rel_dir" = "." ] && rel_dir="(root)"
+
+              FILE_COUNT=$(find "$dir" -maxdepth 1 -type f \
+                ! -name "AGENT-INDEX.md" \
+                ! -name "agent-manifest.txt" \
+                ! -path "./.git/*" | wc -l | tr -d ' ')
+              [ "$FILE_COUNT" -eq 0 ] && continue
+
+              {
+                if [ "$rel_dir" = "(root)" ]; then
+                  echo "### Root Directory (${FILE_COUNT} files)"
+                else
+                  echo "### \`${rel_dir}/\` (${FILE_COUNT} files)"
+                fi
+              } >> "$TEMP_INDEX"
+
+              find "$dir" -maxdepth 1 -type f \
+                ! -name "AGENT-INDEX.md" \
+                ! -name "agent-manifest.txt" \
+                ! -path "./.git/*" | sort | while IFS= read -r f; do
+                fname=$(basename "$f")
+                # Add brief description based on file extension/name
+                case "$fname" in
+                  README.md)         desc="Repository documentation" ;;
+                  CONTRIBUTING.md)   desc="Contribution guidelines" ;;
+                  LICENSE*)          desc="License file" ;;
+                  Makefile)          desc="Build automation" ;;
+                  Dockerfile*)       desc="Container definition" ;;
+                  docker-compose*)   desc="Docker Compose configuration" ;;
+                  *.sh)              desc="Shell script" ;;
+                  *.py)              desc="Python script" ;;
+                  *.yml|*.yaml)      desc="YAML configuration" ;;
+                  *.json)            desc="JSON configuration" ;;
+                  *.toml)            desc="TOML configuration" ;;
+                  *.env*)            desc="Environment variables" ;;
+                  *.md)              desc="Documentation" ;;
+                  *)                 desc="" ;;
+                esac
+                if [ -n "$desc" ]; then
+                  echo "- \`${fname}\` - ${desc}" >> "$TEMP_INDEX"
+                else
+                  echo "- \`${fname}\`" >> "$TEMP_INDEX"
+                fi
+              done
+              echo "" >> "$TEMP_INDEX"
+            done < "$TEMP_DIRS"
+            rm -f "$TEMP_DIRS"
+
+            # ── Manifest ──
+            find . -type f \
+              ! -name "AGENT-INDEX.md" \
+              ! -name "agent-manifest.txt" \
+              ! -path "./.git/*" \
+              ! -path "./.github/*" \
+              \( -name "*.md" -o -name "*.yml" -o -name "*.yaml" -o -name "*.json" -o -name "*.toml" -o -name "*.sh" -o -name "*.py" -o -name "*.env.example" -o -name "Makefile" -o -name "Dockerfile" -o -name "docker-compose*" \) \
+              | sort > "$TEMP_MANIFEST"
+
+          # ══════════════════════════════════════════════════════════════
+          # Fallback: generic directory-based index
+          # ══════════════════════════════════════════════════════════════
+          else
+            {
+              echo "# ${REPO_NAME} Index"
+              echo "Generated for agent-assisted navigation."
+              echo ""
+              echo "## Overview"
+              echo "- Repository: elastic/${REPO_NAME}"
+              echo "- Total documentation files: ${TOTAL_MD}"
+              echo ""
+              echo "## Directory Listing"
+              echo ""
+            } > "$TEMP_INDEX"
+
+            TEMP_DIRS=$(mktemp)
+            find . -type f -name "*.md" \
+              ! -name "AGENT-INDEX.md" \
+              ! -path "./.git/*" \
+              -printf '%h\n' | sort -u > "$TEMP_DIRS"
+
+            while IFS= read -r dir; do
+              [ -z "$dir" ] && continue
+              rel_dir="${dir#./}"
+              FILE_COUNT=$(find "$dir" -maxdepth 1 -type f -name "*.md" ! -name "AGENT-INDEX.md" | wc -l | tr -d ' ')
+              [ "$FILE_COUNT" -eq 0 ] && continue
+
+              echo "### \`${rel_dir}/\` (${FILE_COUNT} files)" >> "$TEMP_INDEX"
+              find "$dir" -maxdepth 1 -type f -name "*.md" ! -name "AGENT-INDEX.md" | sort | while IFS= read -r f; do
+                echo "- $(basename "$f")" >> "$TEMP_INDEX"
+              done
+              echo "" >> "$TEMP_INDEX"
+            done < "$TEMP_DIRS"
+            rm -f "$TEMP_DIRS"
+
+            find . -type f -name "*.md" ! -name "AGENT-INDEX.md" ! -path "./.git/*" | sort > "$TEMP_MANIFEST"
+          fi
+
+          mv "$TEMP_INDEX" "$INDEX_FILE"
+          mv "$TEMP_MANIFEST" "$MANIFEST_FILE"
+
+          echo "Rebuilt $INDEX_FILE"
+          echo "Rebuilt $MANIFEST_FILE ($(wc -l < "$MANIFEST_FILE") entries)"
+
+      - name: Commit and push if changed
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add AGENT-INDEX.md agent-manifest.txt
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "chore: daily sync and index rebuild [automated] [skip ci]"
+          git push
+          echo "Changes committed and pushed"
