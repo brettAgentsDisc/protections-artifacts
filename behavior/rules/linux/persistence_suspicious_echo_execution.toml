@@ -9,7 +9,7 @@ id = "a13c8f01-36a5-4ad7-a282-8d297cf62860"
 license = "Elastic License v2"
 name = "Suspicious Echo Execution"
 os_list = ["linux"]
-version = "1.0.29"
+version = "1.0.30"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and
@@ -74,8 +74,10 @@ not (
     "/snap/docker/*/bin/runc", "/usr/local/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex/codex",
     "/usr/share/windsurf/resources/app/extensions/windsurf/bin/language_server_linux_x64", "/opt/itodd/proj/temp/codex/codex-rs/target/release/codex",
     "/opt/puppetlabs/puppet/bin/ruby", "/root/.nvm/versions/node/*/codex/codex", "/opt/oracle/oracle.ahf/python/bin/python3.10", "/home/*/.npm*/codex/codex",
-    "/home/*/*/codex/codex", "/home/*/.cache/JetBrains/*/codex-x86_64-unknown-linux-musl", "/home/*/.cursor-server/extensions/*/codex"
-
+    "/home/*/*/codex/codex", "/home/*/.cache/JetBrains/*/codex-x86_64-unknown-linux-musl", "/home/*/.cursor-server/extensions/*/codex",
+    "/scratch/user/*/.vscode-server/extensions/openai.chatgpt-*-linux-x64/bin/linux-x86_64/codex", "/home/*/.aimee-code/bin/claude",
+    "/root/.opencode/bin/opencode", "/scratch/user/*/.nvm/versions/node/*/lib/node_modules/@anthropic-ai/claude-code/bin/claude.exe",
+    "/user/*/.vscode-server/extensions/openai.chatgpt-*/bin/linux-x86_64/codex", "/usr/local/bin/teleport", "/usr/bin/coreutils"
   ) or
   process.parent.command_line in (
     "runc init", "buildkit-runc init", "/usr/local/bin/runc init", "python ./ssh.py --update-fingerprints bi_team",
@@ -92,7 +94,8 @@ not (
     "sh -c echo /opt/oracle/instantclient* > /etc/ld.so.conf.d/oracle-instantclient.conf",
     "sh -c *clsecho*", "/bin/bash -c /usr/local/nagios/libexec/mkls*", "/usr/bin/crun*", "*/usr/bin/ssh-keygen*",
     "bash -c source /etc/profile.local; echo $REGISTRY_AUTH_FILE", "*ProxmoxVE*", "*/etc/init.d/acfssihamount*",
-    """/bin/sh -c echo -e "\n Hi, before stop today is $(date) \n" >> /tmp/daily_stop_start_tomcat-apnbdwef.log; /etc/init.d/tomcat-apnbdwef stop >> /tmp/daily_stop_start_tomcat-apnbdwef.log; echo -e "\n Hi, before start today is $(date) \n" >> /tmp/daily_stop_start_tomcat-apnbdwef.log; /etc/init.d/tomcat-apnbdwef start >> /tmp/daily_stop_start_tomcat-apnbdwef.log"""
+    """/bin/sh -c echo -e "\n Hi, before stop today is $(date) \n" >> /tmp/daily_stop_start_tomcat-apnbdwef.log; /etc/init.d/tomcat-apnbdwef stop >> /tmp/daily_stop_start_tomcat-apnbdwef.log; echo -e "\n Hi, before start today is $(date) \n" >> /tmp/daily_stop_start_tomcat-apnbdwef.log; /etc/init.d/tomcat-apnbdwef start >> /tmp/daily_stop_start_tomcat-apnbdwef.log""",
+    "bash -c echo > /dev/tcp/*.thehut.local/1433"
   ) or
   process.command_line == """/usr/bin/sh -c echo date=$(date +"%Y%m%d") > /dev/shm/mag/sptwweb.env""" or
   process.parent.command_line like (

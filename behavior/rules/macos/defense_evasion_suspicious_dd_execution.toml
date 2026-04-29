@@ -7,7 +7,7 @@ id = "c99b8b83-2b2c-43b0-a962-ddb0274c6939"
 license = "Elastic License v2"
 name = "Suspicious DD Execution"
 os_list = ["macos"]
-version = "1.0.9"
+version = "1.0.10"
 
 query = '''
 sequence by process.Ext.effective_parent.entity_id with maxspan=15s
@@ -15,6 +15,7 @@ sequence by process.Ext.effective_parent.entity_id with maxspan=15s
   not process.Ext.effective_parent.executable like ("/Library/Addigy/go-agent", 
                                                     "/usr/local/bin/amagent",
                                                     "/Applications/Support.app/Contents/MacOS/Support",
+                                                    "/Library/Application Support/Mosyle/MosyleMDM.app/Contents/MacOS/MosyleMDM",
                                                     "/Library/Sentinel/sentinel-agent.bundle/Contents/MacOS/sentineld_helper.app/Contents/MacOS/sentineld_helper",
                                                     "/Library/Application Support/JAMF/Jamf.app/Contents/MacOS/JamfDaemon.app/Contents/MacOS/JamfDaemon",
                                                     "/Library/Application Support/JAMF/Jamf.app/Contents/MacOS/JamfManagementService.app/Contents/MacOS/JamfManagementService", 

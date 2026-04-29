@@ -7,7 +7,7 @@ id = "ee5d33a2-604f-4466-bace-4aea921846ed"
 license = "Elastic License v2"
 name = "Suspicious WMI Enumeration via Windows Scripts"
 os_list = ["windows"]
-version = "1.0.10"
+version = "1.0.11"
 
 query = '''
 api where process.name in~ ("wscript.exe", "mshta.exe", "msxsl.exe") and
@@ -25,7 +25,7 @@ api where process.name in~ ("wscript.exe", "mshta.exe", "msxsl.exe") and
                  "C:\\WINDOWS\\System32\\WScript.exe \"C:\\Program Files\\Consol\\DhaService\\StartToolbox.vbs\" ",
                  "\"C:\\Windows\\System32\\WScript.exe\" \"C:\\Program Files (x86)\\Wireless Monitor System V*\\start.vbs\" ",
                  "\"wscript.exe\" \"C:\\Program Files\\Windows Azure VM Agent *\\\\InstallOrUpdateGA.vbs\"",
-                 "\"C:\\Windows\\SysWOW64\\mshta.exe\" \"C:\\programdata\\choice\\ThinkBiosConfig.hta\" {1E460BD7-F1C3-4B2E-88BF-4E770A288AF5}{1E460BD7-F1C3-4B2E-88BF-4E770A288AF5} ") and
+                 "*\\Windows\\SysWOW64\\mshta.exe*\\ThinkBiosConfig.hta*") and
   not process.Ext.api.summary :
                   ("IWbemServices::ExecQuery( Select * from Win32_Process Where Name = 'JAVAW.EXE' )",
                    "IWbemServices::ExecQuery( Select * from Win32_Process Where Name = 'POS.EXE' )",
@@ -48,7 +48,8 @@ api where process.name in~ ("wscript.exe", "mshta.exe", "msxsl.exe") and
                       "C:\\Program Files (x86)\\Thomson Reuters\\Eikon\\Eikon.exe",
                       "C:\\Program Files (x86)\\Welcome\\Welcome.exe",
                       "C:\\Program Files\\ametiq\\ametiq siMed\\*.exe",
-                      "C:\\Program Files (x86)\\PCMatic\\PCPitstopScheduleService.exe")
+                      "C:\\Program Files (x86)\\PCMatic\\PCPitstopScheduleService.exe", 
+                      "C:\\Users\\*\\AppData\\Roaming\\DriverPack Notifier\\DriverPackNotifier.exe")
 '''
 
 min_endpoint_version = "8.15.0"

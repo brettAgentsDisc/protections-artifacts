@@ -7,11 +7,16 @@ id = "87bd993d-d2fa-4047-bc7b-d6a4527d6ab8"
 license = "Elastic License v2"
 name = "Process Execution from Boot Directory"
 os_list = ["linux"]
-version = "1.0.10"
+version = "1.0.11"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and process.executable like "/boot/*" and
-not process.executable == "/boot/loader/entries"
+not (
+  process.executable in ("/boot/loader/entries", "/boot/dietpi/dietpi-login") or
+  process.parent.executable in (
+    "/boot/dietpi/dietpi-update", "/etc/cron.daily/dietpi", "/etc/cron.hourly/dietpi", "/boot/dietpi/dietpi-login"
+  )
+)
 '''
 
 min_endpoint_version = "7.15.0"

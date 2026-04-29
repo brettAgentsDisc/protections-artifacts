@@ -7,7 +7,7 @@ id = "391f1e23-9ee0-4fa4-82b7-a54bebfa077d"
 license = "Elastic License v2"
 name = "Suspicious Suspended Process Creation"
 os_list = ["windows"]
-version = "1.0.7"
+version = "1.0.8"
 
 query = '''
 process where event.action == "start" and
@@ -51,8 +51,13 @@ process where event.action == "start" and
                     $entry.callsite_trailing_bytes :
                             ("8945d08b45d08945f4837df400741a8b45fc8b80*",
                              "8944246c8b44246c89442460488b8424b0050000*",
-                             "488b5560c6420c01833d*", "488b9588000000c6420c01833d*", "488b9580000000c6420c01*",
+                             "488b5560c6420c01*", 
+                             "488b9588000000c6420c01833d*", 
+                             "488b9580000000c6420c01*",
                              "*85f60f95c10fb6c9898d940000004883bdd8000000007420*",
+                             "*85ff0f95c00fb6c0488b9540ffffff488956104881c4e80000005b5e5f415c415d415e415f5d*", 
+                             "c22c0090b8c4000000bac06c8077ffd2*", 
+                             "8945e48b55f48b45e48942088b4df88b5130ffd2*",
                              "c6430c01833d*33c085f60f95c00fb6c0488b8d38ffffff48894b104881c4f80000005b5e5f415c415d415e41",
                              "c22000cccccccccccccccccccccccccccc8b4c2424518b4c2424528b542424518b4c2424528b542424518b4c2424528b542424518b4c2424528b542424518b48"))
 '''

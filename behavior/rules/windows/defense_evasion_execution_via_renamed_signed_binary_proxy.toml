@@ -11,7 +11,7 @@ reference = [
     "https://lolbas-project.github.io",
     "https://www.elastic.co/security-labs/unmasking-financial-services-intrusion-ref0657",
 ]
-version = "1.0.39"
+version = "1.0.40"
 
 query = '''
 process where event.action == "start" and
@@ -74,6 +74,15 @@ process where event.action == "start" and
        process.pe.original_file_name == "RUNDLL32.EXE" and process.args : "360ExtremeBrowserURL") and
   not (process.name : "regasm.x64.exe" and process.parent.executable : "C:\\Program Files (x86)\\Common Files\\Inlite\\InliteControlCenter.exe") and
   not (process.pe.original_file_name == "cscript.exe" and process.parent.executable : "C:\\Program Files (x86)\\Net Protector *\\NPDBKWTT.EXE") and
+  not (
+       process.executable : (
+         "?:\\ProgramData\\Package Cache\\VSTACleanupOldRegistryBundlex64\\cmd_x64.exe",
+         "?:\\ProgramData\\Package Cache\\VSTACleanupOldRegistryBundlex86\\cmd_x86.exe",
+         "?:\\ProgramData\\Package Cache\\CleanupOldRegistryBundlex86\\cmd_x86.exe",
+         "?:\\ProgramData\\Package Cache\\CleanupOldRegistryBundlex64\\cmd_x64.exe"
+       ) and
+       process.parent.name : ("vsta_setup.exe", "vsta_sdk.exe")
+     ) and
   not process.parent.executable : ("C:\\Program Files (x86)\\360\\Total Security\\safemon\\QHSafeTray.exe",
                                    "C:\\Program Files (x86)\\360\\Total Security\\safemon\\QHActiveDefense.exe")
 '''

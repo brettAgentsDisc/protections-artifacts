@@ -7,7 +7,7 @@ id = "fa2e2435-d285-485e-9890-dff92cb78ab7"
 license = "Elastic License v2"
 name = "Process Memory Write to a Non Child Process"
 os_list = ["windows"]
-version = "1.0.7"
+version = "1.0.8"
 
 query = '''
 api where process.Ext.api.name == "WriteProcessMemory" and
@@ -179,7 +179,10 @@ not (process.name : "rundll32.exe" and process.Ext.api.parameters.size <= 140 an
                                    "ff31fa811f9c07cc7fdaa68c9e8bca3a7b4fdf6e0a079a58175ea58ba139c7ae",
                                    "da8a30160ab0fe450cc42aad45999e22ea848ac9a98814d420c4da884e733e22",
                                    "af3d6298a8cd7293479f77eab032478e766dae44749489b9568c9fa50ce70890",
-                                   "32144dbc32aef6b1eab071968c2c2ee6eaf477dcb4a8eb7b8967824f48db17b7")
+                                   "32144dbc32aef6b1eab071968c2c2ee6eaf477dcb4a8eb7b8967824f48db17b7",
+                                   "11d87cac25f6d438db6c6dfec631f97fa5f6ad98e7d99fa50ac1479706efb3b5",
+                                   "c729c4b5a6ad8d247acd4b0d32d5a5999647461ee5f565c618b26d339caebbca",
+                                   "0537c3dd2378218508ebe3cc416d72a99ee2d24ae1c5525e23458f32544ef861")
 '''
 
 min_endpoint_version = "8.14.2"

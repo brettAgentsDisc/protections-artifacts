@@ -8,7 +8,7 @@ license = "Elastic License v2"
 name = "Initial Access or Execution via Microsoft Office Application"
 os_list = ["macos"]
 reference = ["https://objective-see.com/blog/blog_0x4B.html"]
-version = "1.0.38"
+version = "1.0.39"
 
 query = '''
 process where event.action == "exec" and
@@ -77,9 +77,12 @@ process where event.action == "exec" and
    not process.Ext.effective_parent.executable like~ (
         "/Applications/ToDesk.app/Contents/MacOS/ToDesk_Service",
         "/Applications/Docker.app/Contents/MacOS/com.docker.backend",
+        "/Applications/FortiClient.app/Contents/Resources/runtime.helper/FortiClientAgent.app/Contents/MacOS/FortiClientAgent",
         "/Library/Application Support/JAMF/Jamf.app/Contents/MacOS/JamfDaemon.app/Contents/MacOS/JamfDaemon",
         "/Applications/Microsoft Defender.app/Contents/MacOS/wdavdaemon",
+        "/Library/Intune/Microsoft Intune Agent.app/Contents/MacOS/IntuneMdmDaemon",
         "/usr/local/Privacy-i/PISupervisor",
+        "/usr/local/jamf/bin/jamf",
         "/Library/Addigy/auditor",
         "/Library/Elastic/Agent/*",
         "/opt/jc/bin/jumpcloud-agent",

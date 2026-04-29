@@ -13,7 +13,7 @@ reference = [
     "https://intezer.com/blog/research/kaiji-new-chinese-linux-malware-turning-to-golang/",
     "https://www.elastic.co/security-labs/primer-on-persistence-mechanisms",
 ]
-version = "1.0.23"
+version = "1.0.24"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and (
@@ -48,7 +48,7 @@ process where event.type == "start" and event.action == "exec" and (
   process.args like (
     "/usr/sbin/tmpwatch*", "/usr/sap/*", "sed*", "*/../*", "cd ~/.unison*", "/usr/sbin/logrotate*",
     "/home/raulsiim/.local/share/JetBrains/Toolbox/apps/intellij-idea-community-edition/bin/idea",
-    "/usr/bin/flock*"
+    "/usr/bin/flock*", "export VAULT_ADDR=* VAULT_SKIP_VERIFY=true && /usr/local/bin/vault token renew >> ~/.vault-renewal.log 2>&1"
   ) or
   process.executable like (
     "/opt/eset/eei/bin/*", "/tmp/newroot/tmp/.mount_*", "/tmp/.mount_*", "/opt/gotify/gotify-linux-amd64",
@@ -57,7 +57,8 @@ process where event.type == "start" and event.action == "exec" and (
     "/home/*/.local/bin/gitsign-credential-cache",
     "/home/*/.local/share/JetBrains/Toolbox/apps/intellij-idea-ultimate/bin/idea",
     "/home/*/.local/share/JetBrains/*", "/home/*/.local/opt/activitywatch/*",
-    "/home/*/.local/bin/claude-oauth-proxy", "/root/.local/openaev-agent-session/openaev-agent"
+    "/home/*/.local/bin/claude-oauth-proxy", "/root/.local/openaev-agent-session/openaev-agent",
+    "/nix/store/*/bin/.blueman-tray-wrapped"
   ) or
   process.name in ("riptide-agent", "zellij", "gitsign-credential-cache", "jetbrains-toolbox", "goland") or
   process.working_directory == "/var/lib/rabbitmq"
