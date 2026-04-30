@@ -7,7 +7,7 @@ id = "c6ee0cc0-efc4-4353-bbfc-da16ebc4e1a5"
 license = "Elastic License v2"
 name = "Suspicious Script or Process Execution from Mounted Device"
 os_list = ["macos"]
-version = "1.0.43"
+version = "1.0.44"
 
 query = '''
 sequence with maxspan=30s
@@ -34,6 +34,7 @@ sequence with maxspan=30s
   not process.executable like~ ("/Volumes/*/Contents/MacOS/*",
                                 "/Volumes/*/*.app/Contents/MacOS/*",
                                 "/private/tmp/PKInstallSandbox.*",
+                                "/Applications/Solarwinds Discovery Agent.app/Contents/Resources/agent/ruby/bin/ruby",
                                 "/opt/homebrew/Cellar/*") and
   not process.args like~ ("/tmp/PKInstallSandbox.*/Scripts/*", 
                          "/Library/Apple/System/Library/InstallerSandboxes/.*",
@@ -43,6 +44,8 @@ sequence with maxspan=30s
                                        "/usr/bin/sudo",
                                        "/Library/PrivilegedHelperTools/*",
                                        "/System/Library/*") and
+  not (process.parent.code_signature.team_id in ("5C3VHX9RG5", "UBF8T346G9") and
+       process.parent.code_signature.trusted == true) and
   /* Legitimate management tools - consolidated */
   not process.Ext.effective_parent.executable like~ ("/usr/local/jamf/bin/*",
                                                      "/Library/Application Support/JAMF/*",

@@ -12,7 +12,7 @@ reference = [
     "https://www.elastic.co/security-labs/doing-time-with-the-yipphb-dropper",
     "https://www.elastic.co/security-labs/unmasking-financial-services-intrusion-ref0657",
 ]
-version = "1.0.49"
+version = "1.0.50"
 
 query = '''
 process where event.action == "start" and process.name : "powershell.exe" and process.parent.executable != null and
@@ -46,6 +46,7 @@ process where event.action == "start" and process.name : "powershell.exe" and pr
       not process.parent.name : ("explorer.exe", "python.exe", "cmd.exe")) and
  not process.args : "[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String('cGFzc3dvcmQ='))" and
  not (process.command_line : "*echo ~/.ansible/tmp/ansible-tmp*" and process.parent.executable : "C:\\Windows\\System32\\OpenSSH\\sshd.exe") and
+ not (process.args : "$OutputEncoding = [System.Text.Encoding]::UTF8; $b64='eyJjb252ZXJzYXRpb25faWQiOiJ*" and process.parent.name : "Cursor.exe") and 
  not process.command_line :
             ("*ConvertTo-Json*Write-Host*",
              "*BrowserExtension.dll*WebCompanion.BrowserExtension*",
@@ -82,7 +83,12 @@ process where event.action == "start" and process.name : "powershell.exe" and pr
              "*https://go.microsoft.com/fwlink*",
              "*krsfile:////LOBCS*",
              "*ProgramData\\VinitySoft Data\\MariaDb\\*",
-             "\"C:\\Windows\\SysWOW64\\WindowsPowerShell\\v1.0\\powershell.exe\" -noexit -command \"[reflection.assembly]::loadFrom('.\\RD-PSAPI.dll') | import-module\"") and
+             "\"C:\\Windows\\SysWOW64\\WindowsPowerShell\\v1.0\\powershell.exe\" -noexit -command \"[reflection.assembly]::loadFrom('.\\RD-PSAPI.dll') | import-module\"",
+             "*-noni -nop -w 1 -enc *AEUAbABhAHMAdABpAGMAfABUAHIAZQBsAGwAaQB4ACIA*",
+             "*-noni -nop -w 1 -enc *AEUAbABhAHMAdABpAGMAIABBAGcAZQBuAHQAIgA=*",
+             "*JABjAGwAcwA9ACcATQBvAHUAcwBlACcAOwAKACAAIABHAGUAdAAtAEMAaQBtAEkAbgBzAHQAYQBuAGMAZQAgAFcAaQBuADMAMgBfAFAAbgBQAEUAbgB0AGkAdAB5ACAALQBGAGkAb*",
+             "*JABjAGwAcwA9ACcASwBlAHkAYgBvAGEAcgBkACcAOwAKACAAIABHAGUAdAAtAEMAaQBtAEkAbgBzAHQAYQBuAGMAZQAgAFcAaQBuADMAMgBfAFAAbgBQAEUAbgB0AGkAdAB5ACAALQBGAGkAb*",
+             "*JABjAHYAIAA9ACAARwBlAHQALQBJAHQAZQBtAFAAcgBvAHAAZQByAHQAeQAgACcASABLAEwATQA6AFwAUwBPAEYAVABXAEEAUgBFAFwATQBpAGMAcgBvAHMAbwBmAHQAXABXAGkAbgBkAG8AdwBzACAATgBUAFwAQwB1AHIAcgBlAG4AdABWAGUAcgBzAGkAbwBuACcACgAiACQAKAAkAGMAdgAuAFAAcgBvAGQAdQBjAHQATgBhAG0AZQApAHwAJAAoACQAYwB2AC4ARABpAHMAcABsAGEAeQBWAGUAcgBzAGkAbwBuACkAf*") and
  not process.parent.args : "([Datetime]::ParseExact($_.InstalledOn," and
  not process.command_line : ("PowerShell*hkguTzSCb75g7sJ9ChMcmAOPpeBL9ZJy/tejnoCjT+E=*", "*.LastWriteTime.ToFileTime*", "*New-Object*Net.Mail.SmtpClien*") and
  not (process.parent.name : "cmd.exe" and
@@ -94,9 +100,13 @@ process where event.action == "start" and process.name : "powershell.exe" and pr
 
  not (process.args : "NT\\CurrentVersion').InstallationType;" and process.args : "[System.Text.Encoding]::UTF8.GetBytes($OutStr);") and
 
- not (process.parent.code_signature.trusted == true and process.parent.code_signature.subject_name in ("ControlCase LLC", "HashiCorp, Inc.", "JetBrains s.r.o.", "Johannes Schindelin")) and
+ not (process.parent.code_signature.trusted == true and process.parent.code_signature.subject_name in ("ControlCase LLC", "HashiCorp, Inc.", "JetBrains s.r.o.", "Johannes Schindelin", "Anomaly Innovations, Inc https://anoma.ly/")) and
 
  not process.parent.command_line :  "\"C:\\Windows\\system32\\cmd.exe\" " and
+
+ not (process.parent.name : "Cursor.exe" and process.command_line : "* dotnet csharpier format*") and 
+
+ not (process.parent.name : "codex*.exe" and process.args : "[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;*") and 
 
  not process.working_directory : "C:\\ProgramData\\VinitySoft Data\\MariaDb\\" and
 
@@ -104,7 +114,11 @@ process where event.action == "start" and process.name : "powershell.exe" and pr
                                   "C:\\Users\\*\\extensions\\openai.chatgpt-*\\bin\\windows-x86_64\\codex.exe",
                                   "C:\\Users\\*\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
                                   "C:\\Users\\*\\@openai\\*\\x86_64-pc-windows-msvc\\codex\\codex.exe",
-                                  "C:\\Python312\\python.exe") and
+                                  "C:\\Python312\\python.exe",
+                                  "?:\\Users\\*\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\antigravity\\bin\\language_server_windows_x64.exe",
+                                  "?:\\Users\\*\\AppData\\Local\\Python\\bin\\python.exe",
+                                  "?:\\Users\\*\\AppData\\Local\\Programs\\Python\\Python*\\python.exe",
+                                  "?:\\Users\\*\\AppData\\Local\\Python\\pythoncore-*\\python.exe") and
 
  not process.args :  ("$w=$env:LOCALAPPDATA+'/OPWC/';[Reflection.Assembly]::Load([System.IO.File]::ReadAllBytes($w+'OperaSharpDLL.dll'));[OperaSharpDLL.Helper]::Startup()",
                       "IEX (New-Object Net.WebClient).DownloadString('https://install.demo-toolkit.de/dtkupdater.ps1?apikey=*",

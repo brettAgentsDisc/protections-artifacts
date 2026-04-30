@@ -7,7 +7,7 @@ id = "0701ab8c-9abc-41e1-8af7-2d937778e73f"
 license = "Elastic License v2"
 name = "Suspicious Image Creation via ScreenCapture"
 os_list = ["macos"]
-version = "1.0.6"
+version = "1.0.7"
 
 query = '''
 sequence by process.entity_id with maxspan=10s
@@ -23,8 +23,10 @@ sequence by process.entity_id with maxspan=10s
                                                     "/Applications/Ghostty.app/*",
                                                     "/Applications/IntelliJ IDEA.app/*",
                                                     "/Users/*/Applications/Codex.app/*",
+                                                    "/Users/*/Library/Application Support/Claude/claude-code/*/claude.app/*",
                                                     "/Applications/Codex.app/*",
-                                                    "/private/var/folders/*/AppTranslocation/*/Visual Studio Code.app/*")]
+                                                    "/private/var/folders/*/AppTranslocation/*/Visual Studio Code.app/*",
+                                                    "/Users/*/.local/bin/uv")]
 [file where event.action == "modification" and file.path like ("/Users/Shared/*", "/tmp/*", "/private/tmp/*")]
 '''
 

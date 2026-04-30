@@ -11,7 +11,7 @@ reference = [
     "https://www.elastic.co/security-labs/doing-time-with-the-yipphb-dropper",
     "https://www.elastic.co/security-labs/globally-distributed-stealers",
 ]
-version = "1.0.68"
+version = "1.0.69"
 
 query = '''
 sequence by process.entity_id with maxspan=5m
@@ -19,11 +19,11 @@ sequence by process.entity_id with maxspan=5m
     (
      process.name : ("wscript.exe", "cscript.exe", "regsvr32.exe", "mshta.exe", "rundll32.exe", "vbc.exe",
                      "msbuild.exe", "wmic.exe", "cmstp.exe", "RegAsm.exe", "installutil.exe","RegSvcs.exe",
-                     "msxsl.exe", "xwizard.exe", "csc.exe", "curl.exe", "net.exe", "certutil.exe", "ssh.exe",
+                     "msxsl.exe", "xwizard.exe", "csc.exe", "net.exe", "certutil.exe", "ssh.exe",
                      "scp.exe", "msiexec.exe", "bitsadmin.exe") or
      process.pe.original_file_name : ("wscript.exe", "cscript.exe", "regsvr32.exe", "mshta.exe", "rundll32.exe", 
                                       "vbc.exe", "msbuild.exe", "wmic.exe", "cmstp.exe", "RegAsm.exe", "installutil.exe", 
-                                      "RegSvcs.exe", "msxsl.exe", "xwizard.exe", "csc.exe", "curl.exe", "net.exe",
+                                      "RegSvcs.exe", "msxsl.exe", "xwizard.exe", "csc.exe", "net.exe",
                                       "certutil.exe", "ssh.exe", "scp.exe", "msiexec.exe", "bitsadmin.exe") or
      process.code_signature.subject_name == "OpenJS Foundation" or
      process.executable : ("?:\\Program Files\\Java\\jre*\\bin\\javaw.exe",
@@ -185,7 +185,6 @@ sequence by process.entity_id with maxspan=5m
         "rentry.co",
         "*.b-cdn.net", 
         "pastecode.dev",
-        "i.imgur.com",
         "the.earth.li",
         "*.trycloudflare.com",
         "shorturl.at",
@@ -195,12 +194,12 @@ sequence by process.entity_id with maxspan=5m
         "envs.sh"
     ) and
     /* common to use powershell script by Microsoft Cloud sysadmins */
-    not (process.name : ("powershell.exe", "pwsh.exe", "javaw.exe", "node.exe", "dfsvc.exe") and
+    not (process.name : ("powershell.exe", "pwsh.exe", "javaw.exe", "node.exe", "dfsvc.exe", "rundll32.exe") and
          dns.question.name : ("graph.microsoft.com", "*.sharepoint.com", "login.microsoftonline.com", "login.live.com",
                               "raw.githubusercontent.com", "api.github.com", "storage.googleapis.com")) and
     not (dns.question.name : "rev-resolve.azurewebsites.net" and process.name : "wscript.exe") and
     not (process.name : "powershell.exe" and dns.question.name == "gps-prod-api.azurewebsites.net") and
-    not (process.name == "dfsvc.exe" and dns.question.name == "innateclient.azurewebsites.net") and
+    not (process.name == "dfsvc.exe" and dns.question.name in ("innateclient.azurewebsites.net", "hybridconfigwizard.azurewebsites.net", "tmtdist.azurewebsites.net")) and
     not (process.executable : ("?:\\Program Files\\Git\\mingw64\\bin\\curl.exe", "C:\\Users\\*\\.babun\\cygwin\\bin\\curl.exe", "C:\\Users\\*\\Git\\mingw64\\bin\\curl.exe", "C:\\curl\\bin\\curl.exe") and
          dns.question.name in ("api.github.com", "raw.githubusercontent.com", "graph.microsoft.com"))
   ]

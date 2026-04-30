@@ -11,7 +11,7 @@ reference = [
     "https://github.com/danielbohannon/Invoke-Obfuscation",
     "https://www.elastic.co/security-labs/effective-parenting-detecting-lrpc-based-parent-pid-spoofing",
 ]
-version = "1.0.39"
+version = "1.0.40"
 
 query = '''
 process where event.action == "start" and
@@ -22,7 +22,7 @@ process where event.action == "start" and
    /* Issue #263 */
    not process.parent.executable : ("?:\\Program Files\\*.exe", "?:\\Program Files (x86)\\*.exe"))
   ) and
-  not process.Ext.token.integrity_level_name == "system" and
+  not process.Ext.token.integrity_level_name == "system" and process.parent.executable != null and 
   process.command_line :
               ("*^*^*^*^*^*^*^*^*^*",
               "*''*''*''*",

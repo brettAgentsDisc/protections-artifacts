@@ -8,7 +8,7 @@ license = "Elastic License v2"
 name = "Node.js execution followed by network activity"
 os_list = ["windows"]
 reference = ["https://nodejs.org"]
-version = "1.0.7"
+version = "1.0.8"
 
 query = '''
 sequence by process.entity_id with maxspan=1m
@@ -23,7 +23,9 @@ sequence by process.entity_id with maxspan=1m
              "?:\\Windows\\Prey\\versions\\*\\bin\\node.exe") and
  not (process.code_signature.subject_name in ("Western Union Holdings Inc.", "Autodesk, Inc.", "Tobii AB") and process.code_signature.trusted == true) and
  not process.hash.sha256 in ("767c9498a55e9a093c75761c69996360b73b19a0d43b68f92a8eaccc6079f666", "80eafa18b85001b1773471414150c96ad52e0dd6985a4c25d7d5083fb04ae4fd")]
-[dns where event.action == "lookup_requested" and not dns.question.name in ("nodejs.org", "localhost", "fonts.googleapis.com")]
+[dns where event.action == "lookup_requested" and
+ not dns.question.name in ("nodejs.org", "localhost", "fonts.googleapis.com", "www.google-analytics.com", "api2.cursor.sh", "registry.npmjs.org", "api.anthropic.com", "versions-prod.lmstudio.ai") and
+ not (process.executable : "D:\\Azure-BuildAgent*\\node.exe" and dns.question.name : "proxy4zscaler.*.ch")]
 '''
 
 min_endpoint_version = "8.10.0"
