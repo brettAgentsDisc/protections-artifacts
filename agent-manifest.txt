@@ -21,10 +21,12 @@
 ./behavior/rules/cross-platform/execution_potential_reverse_shell_activity_via_terminal.toml
 ./behavior/rules/cross-platform/execution_privilege_escalation_enumeration_via_linpeas.toml
 ./behavior/rules/cross-platform/execution_silent_npm_package_install_command.toml
+./behavior/rules/cross-platform/execution_suspicious_python_one_liner_with_encoded_payload_execution.toml
 ./behavior/rules/cross-platform/impact_darkradiation_ransomware_infection.toml
 ./behavior/rules/cross-platform/impact_suspicious_recursive_file_deletion_via_built_in_utilities.toml
 ./behavior/rules/cross-platform/persistence_persistence_via_genai_tool.toml
 ./behavior/rules/cross-platform/persistence_potential_persistence_via_direct_crontab_modification.toml
+./behavior/rules/cross-platform/persistence_python_path_configuration_file_(.pth)_with_import_preface.toml
 ./behavior/rules/cross-platform/privilege_escalation_sudo_heap_based_buffer_overflow_attempt.toml
 ./behavior/rules/cross-platform/privilege_escalation_suspicious_privileged_docker_execution.toml
 ./behavior/rules/linux/command_and_control_egress_network_connection_followed_by_command_execution.toml
@@ -49,6 +51,7 @@
 ./behavior/rules/linux/defense_evasion_binary_executed_from_shared_memory_directory.toml
 ./behavior/rules/linux/defense_evasion_chattr_execution_from_unusual_parent.toml
 ./behavior/rules/linux/defense_evasion_chattr_execution_with_unusual_target_file.toml
+./behavior/rules/linux/defense_evasion_decoded_payload_piped_to_interpreter.toml
 ./behavior/rules/linux/defense_evasion_defense_evasion_via_bind_mount.toml
 ./behavior/rules/linux/defense_evasion_defense_evasion_via_hidepid_mount.toml
 ./behavior/rules/linux/defense_evasion_deletion_of_shell_history_file.toml
@@ -118,6 +121,7 @@
 ./behavior/rules/linux/execution_potential_linux_reverse_shell_via_java_jar_execution.toml
 ./behavior/rules/linux/execution_potential_linux_reverse_shell_via_java_shell_execution.toml
 ./behavior/rules/linux/execution_potential_remote_code_execution_via_langflow.toml
+./behavior/rules/linux/execution_potential_reverse_shell_activity_via_tcp_udp_socket.toml
 ./behavior/rules/linux/execution_potential_reverse_shell_via_named_pipe.toml
 ./behavior/rules/linux/execution_pseudoterminal_(pty)_creation_from_suspicious_executable.toml
 ./behavior/rules/linux/execution_recently_downloaded_file_made_executable_and_run.toml
@@ -202,7 +206,6 @@
 ./behavior/rules/macos/command_and_control_curl_execution_via_env_binary.toml
 ./behavior/rules/macos/command_and_control_curl_local_file_read_or_write_via_osascript.toml
 ./behavior/rules/macos/command_and_control_curl_to_ftp_server_via_raw_ip.toml
-./behavior/rules/macos/command_and_control_curl_to_suspicious_top_level_domain.toml
 ./behavior/rules/macos/command_and_control_curl_to_telegram_api.toml
 ./behavior/rules/macos/command_and_control_egress_network_connection_from_node.js_descendant.toml
 ./behavior/rules/macos/command_and_control_executable_file_access_or_modification_via_osascript.toml
@@ -494,6 +497,7 @@
 ./behavior/rules/windows/command_and_control_remcos_rat_exepath_registry_modification.toml
 ./behavior/rules/windows/command_and_control_remcos_rat_inetcookies_file_deletion.toml
 ./behavior/rules/windows/command_and_control_remcos_rat_registry_or_file_modification.toml
+./behavior/rules/windows/command_and_control_scripting_or_unsigned_binary_performing_dns_lookups_to_ethereum_rpc_providers.toml
 ./behavior/rules/windows/command_and_control_service_communication_via_mail_protocol.toml
 ./behavior/rules/windows/command_and_control_suspicious_command_and_control_via_internet_explorer.toml
 ./behavior/rules/windows/command_and_control_suspicious_communication_via_mail_protocol.toml
@@ -959,7 +963,6 @@
 ./behavior/rules/windows/execution_suspicious_image_load_via_windows_scripts.toml
 ./behavior/rules/windows/execution_suspicious_java_execution_via_a_windows_script.toml
 ./behavior/rules/windows/execution_suspicious_javascript_execution_via_deno.toml
-./behavior/rules/windows/execution_suspicious_javascript_execution_via_node.js.toml
 ./behavior/rules/windows/execution_suspicious_oversized_script_execution.toml
 ./behavior/rules/windows/execution_suspicious_php_script_execution.toml
 ./behavior/rules/windows/execution_suspicious_powershell_base64_decoding.toml
