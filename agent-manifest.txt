@@ -15,6 +15,7 @@
 ./behavior/rules/cross-platform/credential_access_potential_credential_harvesting_via_python.toml
 ./behavior/rules/cross-platform/credential_access_potential_credential_validation_via_sudo_from_unusual_parent.toml
 ./behavior/rules/cross-platform/credential_access_suspicious_trufflehog_execution_via_nodejs.toml
+./behavior/rules/cross-platform/defense_evasion_node_script_execution_and_immediate_deletion.toml
 ./behavior/rules/cross-platform/defense_evasion_tampering_of_bash_command_line_history.toml
 ./behavior/rules/cross-platform/discovery_discovery_of_github_actions_runner_process_pid.toml
 ./behavior/rules/cross-platform/execution_attempt_to_establish_vscode_remote_tunnel.toml
@@ -60,11 +61,11 @@
 ./behavior/rules/linux/command_and_control_torsocks_execution.toml
 ./behavior/rules/linux/credential_access_linux_init_(pid_1)_secret_dump_via_gdb.toml
 ./behavior/rules/linux/credential_access_manual_memory_password_searching_activity.toml
+./behavior/rules/linux/credential_access_potential_credential_access_via_ptrace.toml
 ./behavior/rules/linux/credential_access_potential_linux_credential_dumping_via_mimipenguin.toml
 ./behavior/rules/linux/credential_access_potential_linux_credential_dumping_via_proc_filesystem.toml
 ./behavior/rules/linux/credential_access_potential_linux_credential_dumping_via_unshadow.toml
 ./behavior/rules/linux/credential_access_potential_memory_dumping_via_dd.toml
-./behavior/rules/linux/credential_access_potential_ssh_password_grabbing_via_ptrace.toml
 ./behavior/rules/linux/credential_access_potential_user_authentication_prompt_phishing.toml
 ./behavior/rules/linux/credential_access_runuser_executed_via_suspicious_parent.toml
 ./behavior/rules/linux/defense_evasion_attempt_to_clear_kernel_ring_buffer_via_dmesg.toml
@@ -107,6 +108,7 @@
 ./behavior/rules/linux/defense_evasion_potential_fileless_execution_via_memory_file_descriptor_from_interpreter.toml
 ./behavior/rules/linux/defense_evasion_potential_loadable_kernel_module_load_via_memory_file_descriptor.toml
 ./behavior/rules/linux/defense_evasion_potential_masquerading_via__proc_self_exe.toml
+./behavior/rules/linux/defense_evasion_potential_memory_file_descriptor_process_execution.toml
 ./behavior/rules/linux/defense_evasion_potential_nologin_ssh_backdoor.toml
 ./behavior/rules/linux/defense_evasion_potential_process_injection_via_dd.toml
 ./behavior/rules/linux/defense_evasion_potential_process_masquerading_via_exec.toml
@@ -140,7 +142,7 @@
 ./behavior/rules/linux/discovery_potential_suid_sgid_files_enumeration.toml
 ./behavior/rules/linux/discovery_script_dns_query_to_managed_kubernetes_cluster.toml
 ./behavior/rules/linux/discovery_security_tooling_enumeration.toml
-./behavior/rules/linux/discovery_suspicious_reading_of__proc_[pid]_maps.toml
+./behavior/rules/linux/discovery_suspicious_reading_of_procfs_maps_file.toml
 ./behavior/rules/linux/execution_background_task_execution_via_a_hidden_process.toml
 ./behavior/rules/linux/execution_bind_shell_via_netcat_traditional.toml
 ./behavior/rules/linux/execution_bind_shell_via_node.toml
@@ -166,6 +168,7 @@
 ./behavior/rules/linux/execution_non_interactive_shell_upgrade.toml
 ./behavior/rules/linux/execution_openssl_reverse_shell_activity_via_named_pipe.toml
 ./behavior/rules/linux/execution_outbound_network_connection_followed_by_process_file_deletion.toml
+./behavior/rules/linux/execution_payload_downloaded_and_piped_to_interpreter.toml
 ./behavior/rules/linux/execution_potential_gsocket_activity.toml
 ./behavior/rules/linux/execution_potential_linux_hack_tool_launched.toml
 ./behavior/rules/linux/execution_potential_linux_reverse_shell_via_java_jar_execution.toml
@@ -190,6 +193,7 @@
 ./behavior/rules/linux/execution_suspicious_interactive_terminal_spawn.toml
 ./behavior/rules/linux/execution_suspicious_lua_command_execution.toml
 ./behavior/rules/linux/execution_suspicious_mining_process_events.toml
+./behavior/rules/linux/execution_suspicious_netcat_execution.toml
 ./behavior/rules/linux/execution_suspicious_perl_command_execution.toml
 ./behavior/rules/linux/execution_suspicious_php_command_execution.toml
 ./behavior/rules/linux/execution_suspicious_python_command_execution.toml
@@ -226,7 +230,6 @@
 ./behavior/rules/linux/persistence_payload_execution_by_web_server.toml
 ./behavior/rules/linux/persistence_potential_remote_code_execution_via_url_encoded_payload.toml
 ./behavior/rules/linux/persistence_scheduled_job_executing_binary_in_unusual_location.toml
-./behavior/rules/linux/persistence_scheduled_task_unusual_command_execution.toml
 ./behavior/rules/linux/persistence_service_created_by_suspicious_process_and_activated.toml
 ./behavior/rules/linux/persistence_setcap_setuid_setgid_capability_set.toml
 ./behavior/rules/linux/persistence_suspicious_file_creation_via_web_server.toml
@@ -235,6 +238,7 @@
 ./behavior/rules/linux/persistence_suspicious_web_server_child_process.toml
 ./behavior/rules/linux/persistence_system_v_init_(init.d)_executed_binary_from_unusual_location.toml
 ./behavior/rules/linux/persistence_udev_execution_followed_by_egress_network_connection.toml
+./behavior/rules/linux/persistence_unusual_command_execution_via_cron.toml
 ./behavior/rules/linux/persistence_unusual_command_execution_via_systemd_scheduled_task.toml
 ./behavior/rules/linux/persistence_unusual_ssh_parent_child_execution.toml
 ./behavior/rules/linux/privilege_escalation_cve_2023_0386_exploitation_attempt.toml
@@ -248,6 +252,7 @@
 ./behavior/rules/linux/privilege_escalation_potential_privilege_escalation_via_a_known_suid_sgid_binary.toml
 ./behavior/rules/linux/privilege_escalation_potential_privilege_escalation_via_a_parent_child_process_sequence.toml
 ./behavior/rules/linux/privilege_escalation_potential_privilege_escalation_via_a_parent_process_sequence.toml
+./behavior/rules/linux/privilege_escalation_potential_privilege_escalation_via_a_suid_sgid_binary.toml
 ./behavior/rules/linux/privilege_escalation_potential_privilege_escalation_via_a_suspicious_uid_change.toml
 ./behavior/rules/linux/privilege_escalation_potential_privilege_escalation_via_busctl_system_call.toml
 ./behavior/rules/linux/privilege_escalation_potential_privilege_escalation_via_fuse_binary.toml
@@ -367,6 +372,7 @@
 ./behavior/rules/macos/defense_evasion_modification_of_safari_settings_via_defaults_command.toml
 ./behavior/rules/macos/defense_evasion_multi_layered_deobfuscation_via_unusual_parent.toml
 ./behavior/rules/macos/defense_evasion_network_file_unzipped_via_unsigned_or_untrusted_binary.toml
+./behavior/rules/macos/defense_evasion_node_script_execution_and_immediate_deletion.toml
 ./behavior/rules/macos/defense_evasion_notificationcenter_silenced_via_killall_binary.toml
 ./behavior/rules/macos/defense_evasion_operating_system_security_updates_disabled.toml
 ./behavior/rules/macos/defense_evasion_payload_decoded_and_decrypted_via_built_in_utilities.toml
@@ -816,6 +822,7 @@
 ./behavior/rules/windows/defense_evasion_process_suspended_via_ttd_monitor_driver.toml
 ./behavior/rules/windows/defense_evasion_protected_process_from_unusual_parent.toml
 ./behavior/rules/windows/defense_evasion_protected_process_light_bypass_via_dll_tampering.toml
+./behavior/rules/windows/defense_evasion_qos_policy_group_policy_registry_overwrite_via_wmi.toml
 ./behavior/rules/windows/defense_evasion_registry_modification_from_a_potentially_altered_call_stack.toml
 ./behavior/rules/windows/defense_evasion_registry_modification_via_wmi_stdregprov.toml
 ./behavior/rules/windows/defense_evasion_regsvr32_scriptlet_execution.toml
@@ -1013,6 +1020,7 @@
 ./behavior/rules/windows/execution_execution_via_wmi_followed_by_network_connection.toml
 ./behavior/rules/windows/execution_java_application_execution_from_suspicious_paths.toml
 ./behavior/rules/windows/execution_java_application_with_unusual_file_extension.toml
+./behavior/rules/windows/execution_java_drop_followed_by_network_activity.toml
 ./behavior/rules/windows/execution_malicious_reputation_of_executable_download.toml
 ./behavior/rules/windows/execution_node.js_execution_followed_by_network_activity.toml
 ./behavior/rules/windows/execution_node.js_recently_dropped_executing_file_with_unusual_extension.toml
