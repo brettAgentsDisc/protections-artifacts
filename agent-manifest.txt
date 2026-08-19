@@ -12,6 +12,8 @@
 ./behavior/rules/cross-platform/command_and_control_potential_vscode_remote_tunnel_established.toml
 ./behavior/rules/cross-platform/command_and_control_suspicious_curl_execution_via_nodejs.toml
 ./behavior/rules/cross-platform/command_and_control_velociraptor_suspicious_shell_execution.toml
+./behavior/rules/cross-platform/credential_access_bun_script_attempted_to_access_imds_metadata.toml
+./behavior/rules/cross-platform/credential_access_potential_cloud_credential_harvesting_via_bun.toml
 ./behavior/rules/cross-platform/credential_access_potential_credential_harvesting_via_python.toml
 ./behavior/rules/cross-platform/credential_access_potential_credential_validation_via_sudo_from_unusual_parent.toml
 ./behavior/rules/cross-platform/credential_access_suspicious_trufflehog_execution_via_nodejs.toml
@@ -316,6 +318,7 @@
 ./behavior/rules/macos/command_and_control_suspicious_vscode_extension_child_process.toml
 ./behavior/rules/macos/command_and_control_url_as_argument_to_python_script_and_immediate_network_connection.toml
 ./behavior/rules/macos/command_and_control_url_as_process_argument_via_installer_package.toml
+./behavior/rules/macos/credential_access_bun_script_attempted_to_access_imds_metadata.toml
 ./behavior/rules/macos/credential_access_cloud_credential_files_accessed_by_osascript.toml
 ./behavior/rules/macos/credential_access_cloud_credential_files_accessed_by_process_in_suspicious_directory.toml
 ./behavior/rules/macos/credential_access_crypto_wallet_file_access_by_unsigned_or_untrusted_binary.toml
@@ -329,6 +332,7 @@
 ./behavior/rules/macos/credential_access_keychain_credential_files_collected_via_archive_utility.toml
 ./behavior/rules/macos/credential_access_keychain_dump_via_native_security_tool.toml
 ./behavior/rules/macos/credential_access_potential_access_to_kerberos_cached_credentials.toml
+./behavior/rules/macos/credential_access_potential_cloud_credential_harvesting_via_bun.toml
 ./behavior/rules/macos/credential_access_potential_credential_harvesting_via_python.toml
 ./behavior/rules/macos/credential_access_potential_credentials_phishing_via_osascript.toml
 ./behavior/rules/macos/credential_access_potential_python_stealer.toml
@@ -1034,6 +1038,7 @@
 ./behavior/rules/windows/execution_potential_execution_via_zipexec.toml
 ./behavior/rules/windows/execution_potential_obfuscated_powershell_script.toml
 ./behavior/rules/windows/execution_potential_obfuscated_script_execution.toml
+./behavior/rules/windows/execution_potential_payload_download_via_finger_lolbin.toml
 ./behavior/rules/windows/execution_potential_pentesting_powershell_script.toml
 ./behavior/rules/windows/execution_potential_powershell_empire_execution.toml
 ./behavior/rules/windows/execution_potential_reverse_shell_via_java.toml
@@ -1064,6 +1069,7 @@
 ./behavior/rules/windows/execution_suspicious_oversized_script_execution.toml
 ./behavior/rules/windows/execution_suspicious_php_script_execution.toml
 ./behavior/rules/windows/execution_suspicious_powershell_base64_decoding.toml
+./behavior/rules/windows/execution_suspicious_powershell_download_and_execution_via_windows_terminal.toml
 ./behavior/rules/windows/execution_suspicious_powershell_downloads.toml
 ./behavior/rules/windows/execution_suspicious_powershell_execution.toml
 ./behavior/rules/windows/execution_suspicious_powershell_execution_via_windows_scripts.toml
@@ -1123,6 +1129,7 @@
 ./behavior/rules/windows/initial_access_microsoft_office_loaded_a_dropped_executable_file.toml
 ./behavior/rules/windows/initial_access_microsoft_office_process_setting_persistence_via_startup.toml
 ./behavior/rules/windows/initial_access_potential_browser_exploit_via_fake_rpc_messages.toml
+./behavior/rules/windows/initial_access_potential_clickfix_attack_via_windows_terminal.toml
 ./behavior/rules/windows/initial_access_potential_cve_2024_21412_exploitation.toml
 ./behavior/rules/windows/initial_access_potential_cve_2025_33053_exploitation.toml
 ./behavior/rules/windows/initial_access_potential_decoy_document_via_user_execution.toml
