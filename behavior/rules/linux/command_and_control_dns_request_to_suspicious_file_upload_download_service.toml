@@ -9,7 +9,7 @@ license = "Elastic License v2"
 name = "DNS Request to Suspicious File Upload/Download Service"
 os_list = ["linux"]
 reference = ["https://lolexfil.github.io/"]
-version = "1.0.4"
+version = "1.0.5"
 
 query = '''
 sequence by process.entity_id with maxspan=10s
@@ -29,7 +29,8 @@ sequence by process.entity_id with maxspan=10s
       process.args like (
         "/snap/firefox/*/firefox.launcher", "/usr/bin/firefox", "/home/*/OtherApps/firefox/firefox"
       )
-    )  
+    ) or
+    process.executable like "*/hermes-agent/.hermes-runtime/python/*/bin/python*"
   )]
   [dns where event.action == "lookup_result" and dns.question.name like~ (
     /* Generic suspicious upload/download services */

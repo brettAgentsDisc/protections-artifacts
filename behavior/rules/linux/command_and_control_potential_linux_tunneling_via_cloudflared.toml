@@ -13,7 +13,7 @@ reference = [
     "https://attack.mitre.org/techniques/T1572/",
     "https://www.trendmicro.com/tr_tr/research/26/c/dissecting-a-warlock-attack.html",
 ]
-version = "1.0.4"
+version = "1.0.5"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and
@@ -40,7 +40,8 @@ process where event.type == "start" and event.action == "exec" and
   (
     process.executable == "/app/ai-test-generation/helpers/modules/cloudflared-linux-amd64" and
     process.working_directory == "/app/ai-test-generation"
-  )
+  ) or
+  process.parent.executable like "*/node_modules/opencode-ai/bin/opencode*"
 )
 '''
 

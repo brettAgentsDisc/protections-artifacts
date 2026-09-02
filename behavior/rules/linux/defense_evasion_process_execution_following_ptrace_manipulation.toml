@@ -1,0 +1,70 @@
+[rule]
+description = """
+This rule detects a process executing shortly after its memory or register state was modified by another process through
+ptrace. The rule correlates memory writes and register modifications with the traced process identifier and may indicate
+successful process injection.
+"""
+id = "2771aca4-31d7-41ae-8cd7-2fbae9b89a47"
+license = "Elastic License v2"
+name = "Process Execution Following Ptrace Manipulation"
+os_list = ["linux"]
+reference = [
+    "https://man7.org/linux/man-pages/man2/ptrace.2.html",
+    "https://www.akamai.com/blog/security-research/the-definitive-guide-to-linux-process-injection",
+]
+version = "1.0.3"
+
+query = '''
+sequence with maxspan=3s
+  [process where event.type == "start" and event.action == "ptrace" and (
+    process.Ext.ptrace.request in (4, 5, 13, 16901) or
+    (process.Ext.ptrace.request == 6 and process.Ext.ptrace.addr in (48, 60, 128, 152))
+  ) and process.executable != null and
+  not process.executable like (
+    "/opt/dynatrace/oneagent/agent/lib64/oneagenthelper", "/opt/scorec/toolworks/totalview.*/bin/tvdengine"
+  )] by process.Ext.ptrace.child_pid
+  [process where event.type == "start" and event.action == "exec"] by process.pid
+'''
+
+min_endpoint_version = "9.1.4"
+optional_actions = []
+[[actions]]
+action = "kill_process"
+field = "process.entity_id"
+state = 0
+
+[[actions]]
+action = "kill_process"
+field = "process.entity_id"
+state = 1
+
+[[actions]]
+action = "kill_process"
+field = "process.parent.entity_id"
+state = 0
+
+[[actions]]
+action = "kill_process"
+field = "process.parent.entity_id"
+state = 1
+
+[[threat]]
+framework = "MITRE ATT&CK"
+[[threat.technique]]
+id = "T1055"
+name = "Process Injection"
+reference = "https://attack.mitre.org/techniques/T1055/"
+[[threat.technique.subtechnique]]
+id = "T1055.008"
+name = "Ptrace System Calls"
+reference = "https://attack.mitre.org/techniques/T1055/008/"
+
+
+
+[threat.tactic]
+id = "TA0005"
+name = "Defense Evasion"
+reference = "https://attack.mitre.org/tactics/TA0005/"
+
+[internal]
+min_endpoint_version = "9.1.4"

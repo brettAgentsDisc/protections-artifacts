@@ -11,7 +11,7 @@ os_list = ["windows"]
 reference = [
     "https://www.elastic.co/security-labs/upping-the-ante-detecting-in-memory-threats-with-kernel-call-stacks",
 ]
-version = "1.0.26"
+version = "1.0.27"
 
 query = '''
 sequence with maxspan=5m
@@ -37,7 +37,11 @@ sequence with maxspan=5m
   not (process.parent.executable : "?:\\Windows\\System32\\WindowsPowerShell\\*\\powershell.exe" and user.id : "S-1-5-18" and
        process.code_signature.trusted == true) and
   not (process.code_signature.subject_name : "ProVation Medical" and process.code_signature.trusted == true) and
-  not (process.parent.code_signature.subject_name in ("UiPath, Inc.", "QSR International Pty Ltd") and process.parent.code_signature.trusted == true) and 
+  not (process.parent.code_signature.subject_name in ("UiPath, Inc.", "QSR International Pty Ltd") and process.parent.code_signature.trusted == true) and
+  not (process.parent.code_signature.subject_name : "Microsoft Corporation" and
+       process.parent.code_signature.trusted == true and
+       process.parent.executable : ("?:\\*\\Microsoft.SQLServer.*.Express.*.exe",
+                                     "?:\\*\\SQL*-SSEI-Expr.exe")) and
   not process.parent.executable :
                     ("?:\\Packages\\Plugins\\Microsoft.GuestConfiguration.ConfigurationforWindows\\*\\gc_service.exe",
                      "?:\\Windows\\System32\\wsmprovhost.exe",

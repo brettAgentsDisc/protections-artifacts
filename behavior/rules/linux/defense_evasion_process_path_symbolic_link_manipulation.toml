@@ -8,7 +8,7 @@ id = "d50a66ea-2065-45cc-a66f-0f7222e4c52d"
 license = "Elastic License v2"
 name = "Process Path Symbolic Link Manipulation"
 os_list = ["linux"]
-version = "1.0.3"
+version = "1.0.4"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and process.name in ("cp", "mv") and
@@ -21,11 +21,13 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

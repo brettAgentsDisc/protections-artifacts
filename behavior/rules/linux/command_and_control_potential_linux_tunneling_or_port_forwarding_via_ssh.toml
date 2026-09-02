@@ -9,7 +9,7 @@ license = "Elastic License v2"
 name = "Potential Linux Tunneling or Port Forwarding via SSH"
 os_list = ["linux"]
 reference = ["https://book.hacktricks.xyz/generic-methodologies-and-resources/tunneling-and-port-forwarding"]
-version = "1.0.7"
+version = "1.0.8"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and
@@ -56,7 +56,6 @@ not (
     "/home/*/.ssh/evolutixtunnelaws.sh", "/home/*/core3/dh/plz-out/bin/security/woodhouse/authenticator/authenticator",
     "/home/*/.local/vscode-insiders/usr/share/code-insiders/code-insiders", "/tmp/*/globusconnectpersonal-*/gt_amd64/bin/relaytool",
     "/home/*/.local/share/antigravity-ide/antigravity-ide", "/home/*/bin/minikube/minikube", "/home/*/.local/bin/codex",
-    "/home/*/.nvm/versions/node/*/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex",
     "/home/linuxbrew/.linuxbrew/Caskroom/codex/*/codex-x86_64-unknown-linux-musl"
   ) or
   process.parent.command_line like (
@@ -68,6 +67,15 @@ not (
   (
     process.parent.executable like ("/home/*/software/crux/bin/reverse_tunnel.sh", "/home/*/software/crux/bin/ssh") and
     process.executable like ("/home/*/software/crux/bin/ssh", "/usr/bin/ssh")
+  ) or
+  (
+    process.parent.command_line like "/home/*/bin/python /home/*/bin/ansible-playbook *" and
+    process.command_line like "ssh -C -o ControlMaster=auto -o ControlPersist=60s *"
+  ) or
+  process.parent.executable like (
+    "/home/*/.local/share/JetBrains/Daemon/*/jetbrainsd",
+    "*/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex",
+    "/home/*/.codex/packages/standalone/releases/*/bin/codex"
   )
 )
 '''

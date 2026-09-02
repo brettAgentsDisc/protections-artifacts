@@ -10,7 +10,7 @@ id = "9e39e74f-2c65-41e9-9b80-8ca874b3d4d1"
 license = "Elastic License v2"
 name = "Potential Loadable Kernel Module Load via Memory File Descriptor"
 os_list = ["linux"]
-version = "1.0.3"
+version = "1.0.4"
 
 query = '''
 sequence by process.entity_id with maxspan=5s
@@ -29,21 +29,25 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.entity_id"
 state = 1
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 1
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

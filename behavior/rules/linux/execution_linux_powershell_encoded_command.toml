@@ -8,7 +8,7 @@ id = "cd6e64ec-2890-4bd8-9d07-bef06465b06f"
 license = "Elastic License v2"
 name = "Linux Powershell Encoded Command"
 os_list = ["linux"]
-version = "1.0.15"
+version = "1.0.16"
 
 query = '''
 process where event.action == "exec" and event.type == "start" and process.name == "pwsh" and
@@ -37,11 +37,13 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

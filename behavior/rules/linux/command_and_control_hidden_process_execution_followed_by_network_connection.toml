@@ -7,7 +7,7 @@ id = "04ec0ec4-86c4-47e3-8c7b-8dad5f97532c"
 license = "Elastic License v2"
 name = "Hidden Process Execution followed by Network Connection"
 os_list = ["linux"]
-version = "1.0.7"
+version = "1.0.8"
 
 query = '''
 sequence by process.entity_id with maxspan=30s
@@ -24,11 +24,13 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

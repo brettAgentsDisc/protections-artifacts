@@ -9,7 +9,7 @@ id = "d67ef864-5567-4675-b2eb-7dfd4443e8af"
 license = "Elastic License v2"
 name = "Recently Downloaded File Made Executable and Run"
 os_list = ["linux"]
-version = "1.0.8"
+version = "1.0.9"
 
 query = '''
 sequence by process.parent.entity_id with maxspan=10s
@@ -31,7 +31,10 @@ sequence by process.parent.entity_id with maxspan=10s
   ) and
   process.args_count >= 2 and
   stringcontains(process.command_line, event0.file.name) and
-  not process.command_line like~ ("*-h*","*--help*","*-V*","*--version*")]
+  not (
+    process.command_line like~ ("*-h*","*--help*","*-V*","*--version*") or
+    process.parent.command_line like "*/.claude/shell-snapshots/snapshot-*"
+  )]
   [process where event.type == "start" and event.action == "exec" and startswith~(process.executable, event0.file.path) and
    not (
      process.parent.executable == "/usr/local/bin/check_idle.sh" or

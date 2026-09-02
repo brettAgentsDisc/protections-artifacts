@@ -11,7 +11,7 @@ reference = [
     "https://gtfobins.github.io/#+non-interactive%20bind%20shell",
     "https://gtfobins.github.io/#+non-interactive%20reverse%20shell",
 ]
-version = "1.0.5"
+version = "1.0.6"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and (
@@ -29,11 +29,13 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

@@ -1,0 +1,72 @@
+[rule]
+description = """
+This rule detects a process executing from a suspicious or user-writable location before performing ptrace operations
+that can attach to, write to, or modify the register state of another process. This behavior may indicate process
+injection or execution manipulation by an untrusted binary.
+"""
+id = "d2f82215-713b-4b6f-8165-5a22352cab6f"
+license = "Elastic License v2"
+name = "Suspicious Process Execution Followed by Ptrace Activity"
+os_list = ["linux"]
+reference = [
+    "https://man7.org/linux/man-pages/man2/ptrace.2.html",
+    "https://www.akamai.com/blog/security-research/the-definitive-guide-to-linux-process-injection",
+]
+version = "1.0.4"
+
+query = '''
+sequence by process.entity_id with maxspan=5s
+  [process where event.type == "start" and event.action == "exec" and process.executable like (
+     "./*", "/tmp/*", "/var/tmp/*", "/dev/shm/*", "/run/*", "/var/run/*", "/boot/*", "/sys/*",
+     "/lost+found/*", "/proc/*", "/var/mail/*", "/var/www/*", "/home/*", "/root/*"
+   ) and
+   not process.parent.executable like (
+     "/root/*/*/chrome_crashpad_handler", "/home/*/*/chrome_crashpad_handler", "/root/*/*/chrome", "/home/*/*/chrome",
+     "/home/*/core3/*/.vscode-test/*/code", "/home/*/.local/share/JetBrains/Toolbox/apps/*",
+     "/tmp/.mount_Cursor*/usr/share/cursor/chrome_crashpad_handler", "/usr/bin/runc", "/usr/local/bin/runsc"
+   )]
+  [process where event.type == "start" and event.action == "ptrace" and process.Ext.ptrace.request in (4, 5, 6, 13, 16, 16901, 16902)]
+'''
+
+min_endpoint_version = "9.1.4"
+optional_actions = []
+[[actions]]
+action = "kill_process"
+field = "process.entity_id"
+state = 0
+
+[[actions]]
+action = "kill_process"
+field = "process.entity_id"
+state = 1
+
+[[actions]]
+action = "kill_process"
+field = "process.parent.entity_id"
+state = 0
+
+[[actions]]
+action = "kill_process"
+field = "process.parent.entity_id"
+state = 1
+
+[[threat]]
+framework = "MITRE ATT&CK"
+[[threat.technique]]
+id = "T1055"
+name = "Process Injection"
+reference = "https://attack.mitre.org/techniques/T1055/"
+[[threat.technique.subtechnique]]
+id = "T1055.008"
+name = "Ptrace System Calls"
+reference = "https://attack.mitre.org/techniques/T1055/008/"
+
+
+
+[threat.tactic]
+id = "TA0005"
+name = "Defense Evasion"
+reference = "https://attack.mitre.org/tactics/TA0005/"
+
+[internal]
+min_endpoint_version = "9.1.4"

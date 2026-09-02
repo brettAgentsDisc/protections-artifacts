@@ -8,7 +8,7 @@ id = "727c9703-6879-45d1-80ad-7729ff244964"
 license = "Elastic License v2"
 name = "Potential Privilege Escalation via a Parent Process Sequence"
 os_list = ["linux"]
-version = "1.0.5"
+version = "1.0.6"
 
 query = '''
 sequence by process.parent.entity_id with maxspan=15s
@@ -71,7 +71,8 @@ sequence by process.parent.entity_id with maxspan=15s
       process.parent.name like "python*" and
       process.parent.args == "terraform.kafka_runner.run-test"
     ) or
-    process.command_line in ("/bin/sh ./catalina.sh stop", "/bin/bash --login", "bash scripts/build_nvxsw_ssh.sh", "subscription-manager identity")
+    process.command_line in ("/bin/sh ./catalina.sh stop", "/bin/bash --login", "bash scripts/build_nvxsw_ssh.sh", "subscription-manager identity") or
+    process.parent.executable like "*/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/*/bin/codex"
   )]
   [process where event.type == "change" and event.action == "uid_change" and
   user.id == 0 and process.parent.user.id != 0 and process.parent.group.id != 0 and

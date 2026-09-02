@@ -8,7 +8,7 @@ license = "Elastic License v2"
 name = "Privilege Escalation Enumeration via LinPEAS"
 os_list = ["linux", "macos"]
 reference = ["https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS"]
-version = "1.0.31"
+version = "1.0.32"
 
 query = '''
 process where event.action == "exec" and
@@ -21,11 +21,13 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

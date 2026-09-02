@@ -12,7 +12,7 @@ reference = [
     "https://www.elastic.co/security-labs/elastic-security-labs-discovers-lobshot-malware",
     "https://www.elastic.co/security-labs/elastic-security-labs-steps-through-the-r77-rootkit",
 ]
-version = "1.0.44"
+version = "1.0.45"
 
 query = '''
 process where event.action == "start" and
@@ -70,7 +70,8 @@ process where event.action == "start" and
    not (process.executable : "?:\\Windows\\System32\\wbem\\WmiPrvSE.exe" and process.args : "/regserver" and
         process.Ext.token.integrity_level_name : "system") and
    not (process.name : "consent.exe" and
-        process.parent.executable : "?:\\Program Files (x86)\\Common Files\\Adobe\\Adobe Desktop Common\\ADS\\CRWindowsClientService.exe") and
+        process.parent.executable : ("?:\\Program Files (x86)\\Common Files\\Adobe\\Adobe Desktop Common\\ADS\\CRWindowsClientService.exe",
+                                     "?:\\Program Files\\EvoSecurity\\EvoAgent\\EvoConsentUI.exe")) and
    not (process.parent.executable : "?:\\Users\\*\\AppData\\Local\\Microsoft\\EdgeUpdate\\*\\MicrosoftEdgeUpdateCore.exe" and
         process.executable : "?:\\WINDOWS\\system32\\SearchProtocolHost.exe" and process.command_line : "*UsGthrFltPipeMssGthrPipe*") and
    not (process.executable : "?:\\Windows\\System32\\SearchProtocolHost.exe" and
@@ -89,7 +90,7 @@ process where event.action == "start" and
         process.parent.executable : ("?:\\Program Files (x86)\\Workplace\\Components\\WorkplaceContainerComponent\\Current\\Workplace Starter.exe",
                                      "?:\\Program Files (x86)\\Workplace\\Components\\WorkplaceContainerComponent\\Current\\Workplace Container Helper.exe")) and
    not (process.executable : "C:\\Windows\\Sys?????\\wbem\\WmiPrvSE.exe" and process.args : "/RegServer" and process.parent.name : ("powershell.exe", "cmd.exe")) and 
-   not (process.parent.name == "lsass.exe" and process.args : "C:\\Program Files\\PasswordRBL\\passwdfw.ps1") and
+   not (process.parent.name == "lsass.exe" and process.args : ("C:\\Program` Files\\PasswordRBL\\passwdfw.ps1", "C:\\Program Files\\PasswordRBL\\passwdfw.ps1")) and
    not (process.name : "services.exe" and process.parent.executable : "?:\\Windows\\LFSAgent\\lasrv.exe" and
         process.code_signature.trusted == true and
         process.code_signature.subject_name : "LEPIDE SOFTWARE PRIVATE LIMITED") and

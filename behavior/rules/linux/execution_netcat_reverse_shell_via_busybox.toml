@@ -8,7 +8,7 @@ id = "332a8018-6615-4d2d-aeff-61e85e5ae77b"
 license = "Elastic License v2"
 name = "Netcat Reverse Shell via Busybox"
 os_list = ["linux"]
-version = "1.0.8"
+version = "1.0.9"
 
 query = '''
 sequence by process.entity_id with maxspan=5s
@@ -32,21 +32,25 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.entity_id"
 state = 1
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 1
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"
