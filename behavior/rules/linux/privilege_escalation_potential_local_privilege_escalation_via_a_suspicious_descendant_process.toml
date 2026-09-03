@@ -8,7 +8,7 @@ id = "2d5d9b4b-01ac-41c4-b5c2-6a9d1fe93aae"
 license = "Elastic License v2"
 name = "Potential Local Privilege Escalation via a Suspicious Descendant Process"
 os_list = ["linux"]
-version = "1.0.5"
+version = "1.0.6"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and process.interactive == true and
@@ -39,7 +39,7 @@ not (
     "/home/*/.local/share/containers/storage/overlay/*", "/home/*/Downloads/*/balena-etcher", "/opt/brave.com/brave/brave", "/var/lib/snapd/snap/node/*/bin/node",
     "/home/linuxbrew/.linuxbrew/Cellar/*", "/home/*/.npm-global/lib/node_modules/@anthropic-ai/claude-code/bin/claude.exe",
     "/oracle/KG2/*/bin/oracle", "/home/*/.codex/*/bin/codex", "/home/*/.please/*/please", "/opt/microsoft/msedge/msedge",
-    "/usr/local/bin/obsidian", "/home/*/.opencode/bin/opencode"
+    "/usr/local/bin/obsidian", "/home/*/.opencode/bin/opencode", "/usr/local/bin/cursor", "/usr/share/code/code", "/usr/share/codium/codium"
   ) or
   process.executable like (
     "/usr/bin/mount", "/usr/bin/fusermount3", "/tmp/newroot/usr/bin/sudo", "/usr/bin/nvidia-modprobe", "/usr/bin/fusermount",
@@ -64,6 +64,23 @@ not (
   (
     process.executable == "/bin/fusermount" and
     process.parent.executable like ("/home/*/.local/bin/nvim", "/home/*/bin/Obsidian-*.AppImage")
+  ) or
+  (
+    process.executable == "/opt/google/chrome/chrome-sandbox" and
+    process.parent.executable == "/opt/google/chrome/chrome"
+  ) or
+  (
+    process.executable == "/usr/share/cursor/chrome-sandbox" and
+    process.command_line == "/usr/share/cursor/chrome-sandbox /usr/share/cursor/cursor --type=zygote"
+  ) or
+  (
+    process.command_line == "netstat -ant" and
+    process.parent.command_line == "/home/uniagent/bin/start.sh agentmain"
+  ) or
+  process.parent.executable like "*/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex" or
+  process.parent.command_line like (
+    "cursor --force --install-extension anthropic.claude-code",
+    "*/codium * /home/*/.claude/skills/*"
   )
 )
 '''

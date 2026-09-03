@@ -19,7 +19,7 @@ reference = [
     "https://book.hacktricks.xyz/generic-methodologies-and-resources/tunneling-and-port-forwarding",
     "https://github.com/erebe/wstunnel",
 ]
-version = "1.0.7"
+version = "1.0.8"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and (
@@ -117,7 +117,16 @@ not (
   (
     process.parent.executable == "/opt/rancher-desktop/resources/resources/linux/lima/bin/limactl" and
     process.executable == "/usr/bin/qemu-system-x86_64"
-  )
+  ) or
+  (
+    process.executable == "/usr/bin/gssh-agent" and
+    process.command_line like "/usr/bin/python3 /usr/bin/gssh-agent /usr/bin/ssh -N -o BatchMode=yes *" and
+    process.args in ("-L", "-R") and
+    process.args like "127.0.0.1:*:127.0.0.1:*"
+  ) or
+  process.parent.executable like "/home/linuxbrew/.linuxbrew/Caskroom/codex/*/bin/codex" or
+  process.parent.command_line like "*/home/*/.claude/*shell-snapshots/snapshot*" or
+  (process.executable == "/usr/bin/qemu-system-x86_64" and process.parent.command_line == "bash /run/entry.sh")
 )
 '''
 

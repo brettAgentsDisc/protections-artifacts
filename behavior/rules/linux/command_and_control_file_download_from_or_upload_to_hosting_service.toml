@@ -7,7 +7,7 @@ id = "5c18132a-e279-404e-a8d8-922546d469a7"
 license = "Elastic License v2"
 name = "File Download from or Upload to Hosting Service"
 os_list = ["linux"]
-version = "1.0.9"
+version = "1.0.10"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and process.name in ("curl", "wget") and
@@ -19,7 +19,8 @@ process.command_line like~ (
   "*paste.c-net.org*", "*paste.hexaspaces.com*"
 ) and not (
   process.parent.executable in ("/opt/aws/awsagent/bin/update", "/batch/pac.liste.categorie.sh") or
-  process.parent.args == "/usr/local/gg/crowdsec-extract.sh"
+  process.parent.args == "/usr/local/gg/crowdsec-extract.sh" or
+  process.parent.command_line like "*/.claude/shell-snapshots/snapshot-*"
 )
 '''
 
@@ -29,11 +30,13 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

@@ -13,7 +13,7 @@ reference = [
     "https://futuresearch.ai/blog/litellm-pypi-supply-chain-attack/",
     "https://www.virustotal.com/gui/file/71e35aef03099cd1f2d6446734273025a163597de93912df321ef118bf135238",
 ]
-version = "1.0.5"
+version = "1.0.6"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and (
@@ -57,7 +57,8 @@ not (
   process.parent.command_line like (
     "*IyBweWxpbnQ6IGRpc2FibGU9cmVzb3VyY2UtbGVha2FnZQoiIiIKVGhpcyBpcyBhIHNoaW0gdGhh*",
     "/usr/bin/python*-c import zlib,base64; exec(zlib.decompress(base64.b64decode(b*",
-    "*/usr/bin/python*-c import sys;sys.path=[p for p in sys.path if p];import binascii,os,zlib;exec(zlib.decompress(binascii.a2b_base64(*"
+    "*/usr/bin/python*-c import sys;sys.path=[p for p in sys.path if p];import binascii,os,zlib;exec(zlib.decompress(binascii.a2b_base64(*",
+    "*/.claude/*shell-snapshots/snapshot-*", "*source /tmp/hermes-snap-*"
   ) or
   process.executable like (
    "/home/*/.local/share/uv/python/cpython-*/bin/python*", "/home/*/miniconda3/envs/py312a/bin/python3*"
@@ -65,7 +66,8 @@ not (
   process.parent.executable like (
     "/home/*/.nvm/versions/node/*/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex", 
     "/home/*/.vscode-server/extensions/*/bin/linux-x86_64/codex", "/home/*/miniconda3/envs/py312a/bin/python3*",
-    "/home/*/.local/share/uv/python/cpython-*/bin/python*"
+    "/home/*/.local/share/uv/python/cpython-*/bin/python*", "*/.codex/packages/standalone/releases/*/bin/codex",
+      "*/.vscode-server/extensions/openai.chatgpt-*/bin/*/codex", "*/node_modules/opencode-ai/bin/opencode*"
   ) or
   process.command_line like (
     "*eNqVkl1PwjAUhu/5Fd61i2Os*",

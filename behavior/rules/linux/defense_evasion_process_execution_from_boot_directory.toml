@@ -7,7 +7,7 @@ id = "87bd993d-d2fa-4047-bc7b-d6a4527d6ab8"
 license = "Elastic License v2"
 name = "Process Execution from Boot Directory"
 os_list = ["linux"]
-version = "1.0.11"
+version = "1.0.12"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and process.executable like "/boot/*" and
@@ -25,11 +25,13 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

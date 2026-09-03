@@ -12,7 +12,7 @@ reference = [
     "https://github.com/MythicAgents/merlin/blob/main/Payload_Type/merlin/container/commands/memfd.go",
     "https://x-c3ll.github.io/posts/fileless-memfd_create/",
 ]
-version = "1.0.17"
+version = "1.0.18"
 
 query = '''
 sequence by process.entity_id with maxspan=10s
@@ -45,11 +45,13 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

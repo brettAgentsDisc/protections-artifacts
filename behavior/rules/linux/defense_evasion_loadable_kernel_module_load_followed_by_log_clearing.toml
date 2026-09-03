@@ -12,7 +12,7 @@ reference = [
     "https://www.elastic.co/security-labs/continuation-on-persistence-mechanisms",
     "https://github.com/MatheuZSecurity/Singularity",
 ]
-version = "1.0.8"
+version = "1.0.9"
 
 query = '''
 sequence with maxspan=10s
@@ -29,21 +29,25 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.entity_id"
 state = 1
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 1
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

@@ -8,7 +8,7 @@ id = "52001df2-a3bf-411d-a09c-5f36a9f976b8"
 license = "Elastic License v2"
 name = "Linux Compilation in Suspicious Directory"
 os_list = ["linux"]
-version = "1.0.11"
+version = "1.0.12"
 
 query = '''
 sequence with maxspan=10s
@@ -26,21 +26,25 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.entity_id"
 state = 1
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 1
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

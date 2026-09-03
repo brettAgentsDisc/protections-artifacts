@@ -8,7 +8,7 @@ id = "742037b3-3ef6-4a33-84ed-b26fc6ae322c"
 license = "Elastic License v2"
 name = "Shared Memory File Turned Executable by Suspicious Parent"
 os_list = ["linux"]
-version = "1.0.11"
+version = "1.0.12"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and process.name == "chmod" and
@@ -35,11 +35,13 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

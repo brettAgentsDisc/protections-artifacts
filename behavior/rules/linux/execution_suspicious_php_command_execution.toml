@@ -8,7 +8,7 @@ id = "d00bd50b-577e-47a7-9234-b4bfaa599791"
 license = "Elastic License v2"
 name = "Suspicious PHP Command Execution"
 os_list = ["linux"]
-version = "1.0.11"
+version = "1.0.12"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and process.parent.executable != null and
@@ -42,7 +42,11 @@ process.args == "-r" and process.command_line like~ (
     "*include(\"/var/www/nextcloud/config/config.php\")*"
   ) or
 process.parent.command_line == "runc init" or
-process.parent.executable in ("/opt/teleport/system/bin/teleport", "/user/sbin/sshd")
+process.parent.executable in ("/opt/teleport/system/bin/teleport", "/usr/sbin/sshd") or
+  (
+    process.executable == "/usr/local/bin/php" and
+    process.command_line == "php -r exit(@fsockopen('127.0.0.1', 9000) ? 0 : 1);"
+  )
 )
 '''
 

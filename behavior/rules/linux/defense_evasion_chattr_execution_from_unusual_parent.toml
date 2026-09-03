@@ -11,7 +11,7 @@ os_list = ["linux"]
 reference = [
     "https://www.trendmicro.com/en_nl/research/22/i/how-malicious-actors-abuse-native-linux-tools-in-their-attacks.html",
 ]
-version = "1.0.9"
+version = "1.0.10"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and process.name == "chattr" and 
@@ -34,11 +34,13 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

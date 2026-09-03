@@ -1,0 +1,73 @@
+[rule]
+description = """
+This rule detects a process reading and then modifying another process's registers through PTRACE_GETREGS and
+PTRACE_SETREGS using the same userspace register buffer. This sequence can indicate execution-flow manipulation during
+process injection, but may also occur during legitimate debugging.
+"""
+id = "fd3096f8-92c3-434f-ab35-5940da8d57f5"
+license = "Elastic License v2"
+name = "Ptrace Register Read Followed by Modification"
+os_list = ["linux"]
+reference = [
+    "https://man7.org/linux/man-pages/man2/ptrace.2.html",
+    "https://www.akamai.com/blog/security-research/the-definitive-guide-to-linux-process-injection",
+]
+version = "1.0.3"
+
+query = '''
+sequence by process.entity_id, process.Ext.ptrace.child_pid with maxspan=1s
+  [process where event.type == "start" and event.action == "ptrace" and
+   process.Ext.ptrace.request == 12 and process.executable != null and
+   not process.executable like (
+     "/opt/dynatrace/oneagent/agent/lib64/oneagenthelper", "/usr/bin/gdb",
+     "/opt/scorec/toolworks/totalview.*bin/tvdsvrmain_mrnet",
+     "/usr/imperva/ragent/bin/InjectionManager", "/usr/bin/reptyr"
+   )
+  ] as event0
+  [process where event.type == "start" and event.action == "ptrace" and
+   process.Ext.ptrace.request == 13 and
+   process.Ext.ptrace.data == event0.process.Ext.ptrace.data]
+'''
+
+min_endpoint_version = "9.1.4"
+optional_actions = []
+[[actions]]
+action = "kill_process"
+field = "process.entity_id"
+state = 0
+
+[[actions]]
+action = "kill_process"
+field = "process.entity_id"
+state = 1
+
+[[actions]]
+action = "kill_process"
+field = "process.parent.entity_id"
+state = 0
+
+[[actions]]
+action = "kill_process"
+field = "process.parent.entity_id"
+state = 1
+
+[[threat]]
+framework = "MITRE ATT&CK"
+[[threat.technique]]
+id = "T1055"
+name = "Process Injection"
+reference = "https://attack.mitre.org/techniques/T1055/"
+[[threat.technique.subtechnique]]
+id = "T1055.008"
+name = "Ptrace System Calls"
+reference = "https://attack.mitre.org/techniques/T1055/008/"
+
+
+
+[threat.tactic]
+id = "TA0005"
+name = "Defense Evasion"
+reference = "https://attack.mitre.org/tactics/TA0005/"
+
+[internal]
+min_endpoint_version = "9.1.4"

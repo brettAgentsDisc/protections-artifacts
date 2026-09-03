@@ -8,7 +8,7 @@ id = "b982a098-f3c6-42d7-958a-86c46f06360b"
 license = "Elastic License v2"
 name = "Payload Execution by Node.js Web Server"
 os_list = ["linux"]
-version = "1.0.5"
+version = "1.0.6"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and process.parent.interactive == false and
@@ -90,15 +90,10 @@ not (
     "/usr/lib/node_modules/openclaw/dist/index.js", "/opt/yarn*", "*anthropic-ai/claude-code/cli.js*",
     "/usr/bin/docker-builder", "/opt/jenkins/.nvm/versions/node/*/bin/npm", "/usr/local/renovate/node",
     "/opt/buildagent/work/*/node_modules/.bin/cypress", "/var/www/html/ext/node_modules/.bin/webpack",
-    "/opt/containerbase/tools/node/*/bin/node", "/opt/*/bin/*/node_modules/.bin/bower", "/usr/local/bin/cursor-agent",
-    "/mnt/*/.cursor-server/bin/linux-x64/*/node", "/scratch/*/home/.cursor-server/bin/linux-x64/*/node"
+    "/opt/containerbase/tools/node/*/bin/node", "/opt/*/bin/*/node_modules/.bin/bower", "/usr/local/bin/cursor-agent"
   ) or
   process.args like ("npx *", "node /var/www/html/ext/node_modules/.bin/webpack*", "grep* | awk*") or
-  process.parent.executable like (
-    "/user/*/.vscode-server/cli/servers/*/server/node", "/scratch/*/.vscode-server/cli/servers/*/server/node",
-    "/users/*/.vscode-server/*/node", "/opt/code-server/*/lib/node", "/opt/jenkins/workspace/*/bin/node",
-    "/scratch/user/*/.cursor-server/bin/linux-x64/*/node", "/*/.vscode-server/.cursor-server/bin/linux-x64/*/node"
-  ) or
+  process.parent.executable like "/opt/jenkins/workspace/*/bin/node" or
   process.working_directory == "/runner/_work/personify/personify/node_modules/snyk" or
   (process.command_line like "*REPO_NAME*" and process.parent.command_line like "node /usr/bin/n8n*") or
   (process.parent.command_line == "node /var/www/html/fs-ws-api/controller/cronJob.js" and process.command_line like "/bin/sh -c nc -zv 10.*") or
@@ -120,7 +115,15 @@ not (
     process.parent.args in ("install", "ci") and
     process.parent.args like "/opt/hostedtoolcache/node/*"
   ) or
-  (process.parent.executable like "/opt/plesk/node/*/bin/node" and process.parent.args in ("install", "ci"))
+  (process.parent.executable like "/opt/plesk/node/*/bin/node" and process.parent.args in ("install", "ci")) or
+  (
+    process.parent.command_line == "node /opt/app-root/app/build/index.js" and
+    process.command_line == "/bin/sh -c netstat -tunlp"
+  ) or
+  process.parent.executable like (
+    "*/.cursor-server/bin/linux-x64/*/node", "*/.vscode-server/*/node",
+    "*/.vscode-server/cli/servers/*/server/node", "*/code-server/*/lib/node"
+  )
 )
 '''
 

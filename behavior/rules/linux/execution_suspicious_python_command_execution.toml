@@ -8,7 +8,7 @@ id = "028d01ae-bfbf-438e-a0d0-23aee55ea5c9"
 license = "Elastic License v2"
 name = "Suspicious Python Command Execution"
 os_list = ["linux"]
-version = "1.0.20"
+version = "1.0.21"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and process.name like "python*" and
@@ -89,6 +89,13 @@ process.args == "-c" and (
     process.executable in ("/bin/python2", "/usr/bin/python2") and
     process.command_line like (
       "*causixenqueuer/firefoot/config.json*", "*s3loguploader.yml*", "*MUM1_AWS_ACCESS_KEY_ID*", "*/etc/init/ahn.conf*", "*AWS_SECRET_ACCESS_KEY_SGP1*"
+    )
+  ) or
+  (
+    process.parent.executable like "*/.codex/packages/standalone/releases/*/bin/codex" or
+    process.parent.command_line like (
+      "codex-linux-sandbox --sandbox-policy-cwd *",
+      "*_bgpids_file=/tmp/gemini-shell-*"
     )
   )
 )

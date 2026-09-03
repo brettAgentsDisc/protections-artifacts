@@ -10,7 +10,7 @@ license = "Elastic License v2"
 name = "MSR Write Access Enabled"
 os_list = ["linux"]
 reference = ["https://linux.die.net/man/8/modprobe"]
-version = "1.0.3"
+version = "1.0.4"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and process.name == "modprobe" and
@@ -23,11 +23,13 @@ optional_actions = []
 action = "kill_process"
 field = "process.entity_id"
 state = 0
+tree = true
 
 [[actions]]
 action = "kill_process"
 field = "process.parent.entity_id"
 state = 0
+tree = true
 
 [[threat]]
 framework = "MITRE ATT&CK"

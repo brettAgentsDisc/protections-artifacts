@@ -8,7 +8,7 @@ id = "94f548c8-cad2-4bc5-bf61-c0e42558ef65"
 license = "Elastic License v2"
 name = "Unusual SSH Parent/Child Execution"
 os_list = ["linux"]
-version = "1.0.17"
+version = "1.0.18"
 
 query = '''
 sequence with maxspan=3s
@@ -37,6 +37,10 @@ sequence with maxspan=3s
       (
         process.parent.command_line == "sudo true" and
         process.command_line == "true"
+      ) or
+      (
+        process.parent.executable == "/usr/bin/ctest" and
+        process.parent.command_line like "ctest --test-dir /tmp/* --output-on-failure*"
       )
     )
   ] by process.parent.entity_id

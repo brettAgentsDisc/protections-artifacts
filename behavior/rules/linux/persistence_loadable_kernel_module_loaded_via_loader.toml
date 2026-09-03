@@ -10,7 +10,7 @@ license = "Elastic License v2"
 name = "Loadable Kernel Module Loaded via Loader"
 os_list = ["linux"]
 reference = ["https://www.elastic.co/security-labs/continuation-on-persistence-mechanisms"]
-version = "1.0.3"
+version = "1.0.4"
 
 query = '''
 process where event.type == "start" and event.action == "load_module" and (
@@ -23,12 +23,17 @@ process where event.type == "start" and event.action == "load_module" and (
   )
 ) and
 not (
-  process.executable like ("/tmp/newroot/*", "/run/systemd/mount-rootfs/sbin/*") or
+  process.executable like ("/tmp/newroot/*", "/run/systemd/mount-rootfs/sbin/*", "/opt/puppetlabs/puppet/bin/ruby") or
   (
     process.parent.command_line == "bash /var/lib/guardicore/bin/gc-enforcement-wrapper start-agent" and
     process.command_line == "bash /var/lib/guardicore/bin/gc-enforcement-wrapper start-agent" and
     process.working_directory == "/var/lib/guardicore"
-  )
+  ) or
+  (
+    process.command_line == "/bin/bash /bin/mst start" and
+    process.parent.command_line == "/bin/bash /bin/mst start"
+  ) or
+  process.command_line in ("sh -c mst start >> /dev/null", "/bin/sh /usr/local/bin/facter -p -j")
 )
 '''
 

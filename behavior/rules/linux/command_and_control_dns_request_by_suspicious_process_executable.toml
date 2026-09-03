@@ -8,7 +8,7 @@ id = "503823dd-722f-4f23-84fc-8a6024f505f2"
 license = "Elastic License v2"
 name = "DNS Request by Suspicious Process Executable"
 os_list = ["linux"]
-version = "1.0.6"
+version = "1.0.7"
 
 query = '''
 sequence by process.entity_id with maxspan=10s
@@ -35,7 +35,11 @@ sequence by process.entity_id with maxspan=10s
       process.command_line like "/usr/libexec/qemu-binfmt/x86_64-binfmt-P *"
     ) or
     process.parent.executable in ("/usr/bin/skopeo", "/usr/bin/buildah") or
-    process.args == "datadog-ipc-helper"
+    process.args == "datadog-ipc-helper" or
+    process.executable like (
+      "/nix/store/*claude-code-*/bin/.claude-wrapped",
+      "*/node_modules/@kilocode/cli/bin/.kilo"
+    )
   )]
   [dns where event.action == "lookup_result" and dns.question.name != "localhost" and
   not (

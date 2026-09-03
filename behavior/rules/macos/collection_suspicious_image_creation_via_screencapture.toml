@@ -7,7 +7,7 @@ id = "0701ab8c-9abc-41e1-8af7-2d937778e73f"
 license = "Elastic License v2"
 name = "Suspicious Image Creation via ScreenCapture"
 os_list = ["macos"]
-version = "1.0.9"
+version = "1.0.10"
 
 query = '''
 sequence by process.entity_id with maxspan=10s
@@ -31,7 +31,8 @@ sequence by process.entity_id with maxspan=10s
                                                     "/Applications/Obsidian.app/*",
                                                     "/Applications/Tabby.app/*",
                                                     "/Applications/Android Studio.app/Contents/MacOS/studio",
-                                                    "/Applications/Zed.app/Contents/MacOS/zed")]
+                                                    "/Applications/Zed.app/Contents/MacOS/zed",
+                                                    "/Applications/WebStorm.app/*")]
 [file where event.action == "modification" and file.path like ("/Users/Shared/*", "/tmp/*", "/private/tmp/*")]
 '''
 
