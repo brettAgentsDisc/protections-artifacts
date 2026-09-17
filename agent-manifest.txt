@@ -95,6 +95,7 @@
 ./behavior/rules/linux/defense_evasion_execution_of_memory_file_descriptor_via_suspicious_process.toml
 ./behavior/rules/linux/defense_evasion_file_creation_or_modification_via_(memory)_file_descriptor.toml
 ./behavior/rules/linux/defense_evasion_hexadecimal_ip_command_line_argument.toml
+./behavior/rules/linux/defense_evasion_high_entropy_elf_file_creation.toml
 ./behavior/rules/linux/defense_evasion_linux_compilation_in_suspicious_directory.toml
 ./behavior/rules/linux/defense_evasion_linux_hidden_file_mounted.toml
 ./behavior/rules/linux/defense_evasion_linux_payload_decoded_and_decrypted_via_built_in_utility.toml
@@ -632,6 +633,7 @@
 ./behavior/rules/windows/credential_access_potential_credential_access_via_windows_credential_history.toml
 ./behavior/rules/windows/credential_access_potential_discovery_of_dpapi_master_keys.toml
 ./behavior/rules/windows/credential_access_potential_discovery_of_windows_credential_manager_store.toml
+./behavior/rules/windows/credential_access_potential_entra_id_prt_extraction_via_browsercore.toml
 ./behavior/rules/windows/credential_access_potential_google_credentials_phishing.toml
 ./behavior/rules/windows/credential_access_potential_net_ntlm_coercion_via_snipping_tool_ms_screensketch_uri_(cve_2026_33829).toml
 ./behavior/rules/windows/credential_access_powershell_script_with_passwords_vault_access_capability.toml
@@ -786,6 +788,7 @@
 ./behavior/rules/windows/defense_evasion_potential_evasion_via_inline_execute_assembly.toml
 ./behavior/rules/windows/defense_evasion_potential_evasion_via_intel_gfxdownloadwrapper.toml
 ./behavior/rules/windows/defense_evasion_potential_evasion_via_invalid_code_signature.toml
+./behavior/rules/windows/defense_evasion_potential_evasion_via_microsoft_boot_time_removal_driver.toml
 ./behavior/rules/windows/defense_evasion_potential_evasion_via_oversized_image_load.toml
 ./behavior/rules/windows/defense_evasion_potential_evasion_via_stack_rumbling.toml
 ./behavior/rules/windows/defense_evasion_potential_evasion_with_hardware_breakpoints.toml
