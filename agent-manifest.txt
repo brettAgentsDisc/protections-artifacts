@@ -18,6 +18,7 @@
 ./behavior/rules/cross-platform/credential_access_potential_credential_validation_via_sudo_from_unusual_parent.toml
 ./behavior/rules/cross-platform/credential_access_suspicious_trufflehog_execution_via_nodejs.toml
 ./behavior/rules/cross-platform/defense_evasion_node_script_execution_and_immediate_deletion.toml
+./behavior/rules/cross-platform/defense_evasion_potential_obfuscated_javascript_file_creation.toml
 ./behavior/rules/cross-platform/defense_evasion_tampering_of_bash_command_line_history.toml
 ./behavior/rules/cross-platform/discovery_discovery_of_github_actions_runner_process_pid.toml
 ./behavior/rules/cross-platform/execution_attempt_to_establish_vscode_remote_tunnel.toml
@@ -31,6 +32,7 @@
 ./behavior/rules/cross-platform/execution_suspicious_python_one_liner_with_encoded_payload_execution.toml
 ./behavior/rules/cross-platform/impact_darkradiation_ransomware_infection.toml
 ./behavior/rules/cross-platform/impact_suspicious_recursive_file_deletion_via_built_in_utilities.toml
+./behavior/rules/cross-platform/initial_access_bun_runtime_dropped_and_executed_via_node.js.toml
 ./behavior/rules/cross-platform/initial_access_potential_execution_via_vs_code_tasks.toml
 ./behavior/rules/cross-platform/initial_access_suspicious_terraform_provider_execution_and_network_connection.toml
 ./behavior/rules/cross-platform/persistence_persistence_via_genai_tool.toml
@@ -95,7 +97,6 @@
 ./behavior/rules/linux/defense_evasion_execution_of_memory_file_descriptor_via_suspicious_process.toml
 ./behavior/rules/linux/defense_evasion_file_creation_or_modification_via_(memory)_file_descriptor.toml
 ./behavior/rules/linux/defense_evasion_hexadecimal_ip_command_line_argument.toml
-./behavior/rules/linux/defense_evasion_high_entropy_elf_file_creation.toml
 ./behavior/rules/linux/defense_evasion_linux_compilation_in_suspicious_directory.toml
 ./behavior/rules/linux/defense_evasion_linux_hidden_file_mounted.toml
 ./behavior/rules/linux/defense_evasion_linux_payload_decoded_and_decrypted_via_built_in_utility.toml
@@ -529,6 +530,7 @@
 ./behavior/rules/macos/execution_vscode_extension_install_via_uri_handler.toml
 ./behavior/rules/macos/exfiltration_potential_data_exfiltration_via_curl.toml
 ./behavior/rules/macos/exfiltration_user_keychain_exfiltration_via_curl.toml
+./behavior/rules/macos/initial_access_bun_runtime_dropped_and_executed_via_node.js.toml
 ./behavior/rules/macos/initial_access_initial_access_or_execution_via_microsoft_office_application.toml
 ./behavior/rules/macos/initial_access_potential_clickfix_attack_via_base64_decoded_payload.toml
 ./behavior/rules/macos/initial_access_potential_execution_via_vs_code_tasks.toml
@@ -579,6 +581,7 @@
 ./behavior/rules/windows/command_and_control_dns_over_https_by_an_unusual_process.toml
 ./behavior/rules/windows/command_and_control_dns_query_to_suspicious_top_level_domain.toml
 ./behavior/rules/windows/command_and_control_download_activity_via_a_headless_browser.toml
+./behavior/rules/windows/command_and_control_download_of_screenconnect_rmm_installer_from_suspicious_url.toml
 ./behavior/rules/windows/command_and_control_execution_from_suspicious_stack_trailing_bytes.toml
 ./behavior/rules/windows/command_and_control_execution_of_a_file_written_by_a_signed_binary_proxy.toml
 ./behavior/rules/windows/command_and_control_ingress_tool_transfer_via_curl.toml
@@ -600,6 +603,7 @@
 ./behavior/rules/windows/command_and_control_remcos_rat_exepath_registry_modification.toml
 ./behavior/rules/windows/command_and_control_remcos_rat_inetcookies_file_deletion.toml
 ./behavior/rules/windows/command_and_control_remcos_rat_registry_or_file_modification.toml
+./behavior/rules/windows/command_and_control_remote_management_access_launch_after_msi_install.toml
 ./behavior/rules/windows/command_and_control_scripting_or_unsigned_binary_performing_dns_lookups_to_ethereum_rpc_providers.toml
 ./behavior/rules/windows/command_and_control_service_communication_via_mail_protocol.toml
 ./behavior/rules/windows/command_and_control_suspicious_command_and_control_via_internet_explorer.toml
@@ -694,6 +698,7 @@
 ./behavior/rules/windows/defense_evasion_control_panel_process_with_unusual_arguments.toml
 ./behavior/rules/windows/defense_evasion_crashdump_disabled_via_registry_modification.toml
 ./behavior/rules/windows/defense_evasion_cross_process_api_activity_with_truncated_stack.toml
+./behavior/rules/windows/defense_evasion_cursor_hiding_utility_via_screenconnect.toml
 ./behavior/rules/windows/defense_evasion_defense_evasion_via_registry_modification.toml
 ./behavior/rules/windows/defense_evasion_delayed_common_language_runtime_load.toml
 ./behavior/rules/windows/defense_evasion_direct_syscall_from_unsigned_module.toml
