@@ -9,7 +9,7 @@ id = "bc8a7958-dabb-42e5-b23c-6e3472cf395d"
 license = "Elastic License v2"
 name = "Suspicious Echo Execution"
 os_list = ["linux"]
-version = "1.0.13"
+version = "1.0.12"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and

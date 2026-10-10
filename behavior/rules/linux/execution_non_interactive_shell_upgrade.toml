@@ -31,7 +31,7 @@ not (
   process.parent.executable like "/home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor/portable-ruby/*/bin/ruby" or
   process.command_line == "stty -echo raw min 0 time 2" or
   process.args like ("/dev/tty*", "/dev/serial/*") or
-  process.parent.args == "/usr/share/emacs/site-lisp/emacspeak/servers/dtk-exp"
+  process.parent.args == "/usr/share/emacs/site-lisp/emacspeak/servers/dtk-exp" 
 )
 '''
 
