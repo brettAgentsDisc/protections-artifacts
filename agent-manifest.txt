@@ -9,6 +9,7 @@
 ./behavior/README.md
 ./behavior/rules/cross-platform/collection_data_encrypted_and_archived.toml
 ./behavior/rules/cross-platform/collection_environment_variable_secret_collection.toml
+./behavior/rules/cross-platform/command_and_control_curl_download_activity_from_npm_package_install.toml
 ./behavior/rules/cross-platform/command_and_control_potential_vscode_remote_tunnel_established.toml
 ./behavior/rules/cross-platform/command_and_control_suspicious_curl_execution_via_nodejs.toml
 ./behavior/rules/cross-platform/command_and_control_velociraptor_suspicious_shell_execution.toml
@@ -534,6 +535,7 @@
 ./behavior/rules/macos/initial_access_initial_access_or_execution_via_microsoft_office_application.toml
 ./behavior/rules/macos/initial_access_potential_clickfix_attack_via_base64_decoded_payload.toml
 ./behavior/rules/macos/initial_access_potential_execution_via_vs_code_tasks.toml
+./behavior/rules/macos/initial_access_potential_terminalfix_attack_via_remote_base64_encoded_payload.toml
 ./behavior/rules/macos/initial_access_suspicious_execution_via_script_editor.toml
 ./behavior/rules/macos/lateral_movement_potential_kerberos_attack_via_bifrost.toml
 ./behavior/rules/macos/persistence_at_job_creation_or_modification_via_shell_command.toml
@@ -584,6 +586,7 @@
 ./behavior/rules/windows/command_and_control_download_of_screenconnect_rmm_installer_from_suspicious_url.toml
 ./behavior/rules/windows/command_and_control_execution_from_suspicious_stack_trailing_bytes.toml
 ./behavior/rules/windows/command_and_control_execution_of_a_file_written_by_a_signed_binary_proxy.toml
+./behavior/rules/windows/command_and_control_http_download_via_utility_spawned_by_screenconnect.toml
 ./behavior/rules/windows/command_and_control_ingress_tool_transfer_via_curl.toml
 ./behavior/rules/windows/command_and_control_ingress_tool_transfer_via_inet_cache.toml
 ./behavior/rules/windows/command_and_control_ingress_tool_transfer_via_powershell.toml
@@ -604,6 +607,8 @@
 ./behavior/rules/windows/command_and_control_remcos_rat_inetcookies_file_deletion.toml
 ./behavior/rules/windows/command_and_control_remcos_rat_registry_or_file_modification.toml
 ./behavior/rules/windows/command_and_control_remote_management_access_launch_after_msi_install.toml
+./behavior/rules/windows/command_and_control_screenconnect_client_installed_from_an_existing_screenconnect_session.toml
+./behavior/rules/windows/command_and_control_screenconnect_installer_download_via_living_off_the_land_utility.toml
 ./behavior/rules/windows/command_and_control_scripting_or_unsigned_binary_performing_dns_lookups_to_ethereum_rpc_providers.toml
 ./behavior/rules/windows/command_and_control_service_communication_via_mail_protocol.toml
 ./behavior/rules/windows/command_and_control_suspicious_command_and_control_via_internet_explorer.toml
@@ -1063,6 +1068,7 @@
 ./behavior/rules/windows/execution_potential_reverse_shell_via_java.toml
 ./behavior/rules/windows/execution_potential_reverse_shell_via_powershell.toml
 ./behavior/rules/windows/execution_potential_shell_execution_via_netcat.toml
+./behavior/rules/windows/execution_potential_shellcode_download_and_execution_via_powershell.toml
 ./behavior/rules/windows/execution_powershell_empire_script_execution.toml
 ./behavior/rules/windows/execution_powershell_engine_loaded_via_injection.toml
 ./behavior/rules/windows/execution_powershell_execution_from_winget_configuration_remoting_server.toml
