@@ -115,8 +115,10 @@
 ./behavior/rules/linux/defense_evasion_network_connection_following_ptrace_manipulation.toml
 ./behavior/rules/linux/defense_evasion_potential_disabling_of_apparmor.toml
 ./behavior/rules/linux/defense_evasion_potential_fileless_execution_sequence.toml
+./behavior/rules/linux/defense_evasion_potential_fileless_execution_via_exec_followed_by_memory_file_descriptor.toml
 ./behavior/rules/linux/defense_evasion_potential_fileless_execution_via_memory_file_descriptor_by_lolbin.toml
 ./behavior/rules/linux/defense_evasion_potential_fileless_execution_via_memory_file_descriptor_from_interpreter.toml
+./behavior/rules/linux/defense_evasion_potential_fileless_execution_via_o_tmpfile.toml
 ./behavior/rules/linux/defense_evasion_potential_instruction_pointer_modification_via_ptrace.toml
 ./behavior/rules/linux/defense_evasion_potential_loadable_kernel_module_load_via_memory_file_descriptor.toml
 ./behavior/rules/linux/defense_evasion_potential_masquerading_via__proc_self_exe.toml
@@ -166,6 +168,7 @@
 ./behavior/rules/linux/execution_bind_shell_via_socket.toml
 ./behavior/rules/linux/execution_bpf_filter_applied_using_traffic_control.toml
 ./behavior/rules/linux/execution_command_interpreter_with_ip_address_argument.toml
+./behavior/rules/linux/execution_execution_of_a_recently_created_file_with_malicious_reputation.toml
 ./behavior/rules/linux/execution_interactive_shell_spawned_via_hidden_process.toml
 ./behavior/rules/linux/execution_javascript_execution_via_deno_on_linux.toml
 ./behavior/rules/linux/execution_javascript_reverse_shell_via_node.js.toml
@@ -229,6 +232,7 @@
 ./behavior/rules/linux/initial_access_potential_remote_code_execution_via_database_server.toml
 ./behavior/rules/linux/initial_access_potential_remote_code_execution_via_mail_server.toml
 ./behavior/rules/linux/initial_access_potential_telnet_authentication_bypass_(cve_2026_24061).toml
+./behavior/rules/linux/initial_access_zimbra_swatchdog_snmp_command_injection_execution.toml
 ./behavior/rules/linux/lateral_movement_potential_hackerschoice_tool_downloaded.toml
 ./behavior/rules/linux/lateral_movement_potential_netcat_file_listener_established.toml
 ./behavior/rules/linux/persistence_at_utility_launched_through_udevadm.toml
@@ -245,6 +249,7 @@
 ./behavior/rules/linux/persistence_payload_downloaded_via_curl_or_wget_by_web_server.toml
 ./behavior/rules/linux/persistence_payload_execution_by_node.js_web_server.toml
 ./behavior/rules/linux/persistence_payload_execution_by_web_server.toml
+./behavior/rules/linux/persistence_persistence_file_creation_through_unusual_executable.toml
 ./behavior/rules/linux/persistence_potential_remote_code_execution_via_url_encoded_payload.toml
 ./behavior/rules/linux/persistence_scheduled_job_executing_binary_in_unusual_location.toml
 ./behavior/rules/linux/persistence_service_created_by_suspicious_process_and_activated.toml
@@ -503,7 +508,6 @@
 ./behavior/rules/macos/execution_suspicious_interactive_shell_execution.toml
 ./behavior/rules/macos/execution_suspicious_large_script_execution_via_shell_command.toml
 ./behavior/rules/macos/execution_suspicious_network_connection_via_installer_package.toml
-./behavior/rules/macos/execution_suspicious_perl_child_process_execution.toml
 ./behavior/rules/macos/execution_suspicious_powershell_child_process.toml
 ./behavior/rules/macos/execution_suspicious_python_package_child_process_execution.toml
 ./behavior/rules/macos/execution_suspicious_python_script_execution_and_network_connection.toml
@@ -671,6 +675,7 @@
 ./behavior/rules/windows/credential_access_unusual_ldap_client_process.toml
 ./behavior/rules/windows/credential_access_web_browser_credential_access_via_scripting_utility.toml
 ./behavior/rules/windows/credential_access_web_browser_credential_access_via_unsigned_process.toml
+./behavior/rules/windows/credential_access_web_credential_access_via_injected_browser.toml
 ./behavior/rules/windows/defense_evasion__api_via_callback_from_a_suspicious_stack.toml
 ./behavior/rules/windows/defense_evasion_allowprotectedrenames_registry_modification.toml
 ./behavior/rules/windows/defense_evasion_amsi_bypass_from_suspicious_module.toml
@@ -822,6 +827,7 @@
 ./behavior/rules/windows/defense_evasion_potential_masquerading_as_svchost.toml
 ./behavior/rules/windows/defense_evasion_potential_masquerading_as_windows_error_manager.toml
 ./behavior/rules/windows/defense_evasion_potential_module_stomping_with_network_activity.toml
+./behavior/rules/windows/defense_evasion_potential_mythic_medusa_python_payload.toml
 ./behavior/rules/windows/defense_evasion_potential_netntlmv1_downgrade_attack.toml
 ./behavior/rules/windows/defense_evasion_potential_ntdll_memory_unhooking.toml
 ./behavior/rules/windows/defense_evasion_potential_operation_via_direct_syscall.toml
@@ -963,6 +969,7 @@
 ./behavior/rules/windows/defense_evasion_suspicious_wmic_xsl_script_execution.toml
 ./behavior/rules/windows/defense_evasion_system_binary_proxy_execution_via_scriptrunner.toml
 ./behavior/rules/windows/defense_evasion_system_boot_files_permission_change.toml
+./behavior/rules/windows/defense_evasion_system_dll_masquerading_from_user_writable_paths.toml
 ./behavior/rules/windows/defense_evasion_system_utility_execution_from_unbacked_memory.toml
 ./behavior/rules/windows/defense_evasion_thread_suspension_from_unbacked_memory.toml
 ./behavior/rules/windows/defense_evasion_transacted_file_activity_via_an_unsigned_dll.toml
