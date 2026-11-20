@@ -35,6 +35,7 @@
 ./behavior/rules/cross-platform/impact_suspicious_recursive_file_deletion_via_built_in_utilities.toml
 ./behavior/rules/cross-platform/initial_access_bun_runtime_dropped_and_executed_via_node.js.toml
 ./behavior/rules/cross-platform/initial_access_potential_execution_via_vs_code_tasks.toml
+./behavior/rules/cross-platform/initial_access_shell_or_suspicious_process_spawned_by_ray_worker.toml
 ./behavior/rules/cross-platform/initial_access_suspicious_terraform_provider_execution_and_network_connection.toml
 ./behavior/rules/cross-platform/persistence_persistence_via_genai_tool.toml
 ./behavior/rules/cross-platform/persistence_potential_persistence_via_direct_crontab_modification.toml
@@ -168,6 +169,7 @@
 ./behavior/rules/linux/execution_bind_shell_via_socket.toml
 ./behavior/rules/linux/execution_bpf_filter_applied_using_traffic_control.toml
 ./behavior/rules/linux/execution_command_interpreter_with_ip_address_argument.toml
+./behavior/rules/linux/execution_elf_file_creation_through_suspicious_executable.toml
 ./behavior/rules/linux/execution_execution_of_a_recently_created_file_with_malicious_reputation.toml
 ./behavior/rules/linux/execution_interactive_shell_spawned_via_hidden_process.toml
 ./behavior/rules/linux/execution_javascript_execution_via_deno_on_linux.toml
@@ -259,7 +261,7 @@
 ./behavior/rules/linux/persistence_suspicious_python_path_configuration_file_(.pth)_creation.toml
 ./behavior/rules/linux/persistence_suspicious_web_server_child_process.toml
 ./behavior/rules/linux/persistence_system_v_init_(init.d)_executed_binary_from_unusual_location.toml
-./behavior/rules/linux/persistence_udev_execution_followed_by_egress_network_connection.toml
+./behavior/rules/linux/persistence_tainted_kernel_object_created_and_immediately_loaded.toml
 ./behavior/rules/linux/persistence_unusual_command_execution_via_cron.toml
 ./behavior/rules/linux/persistence_unusual_command_execution_via_systemd_scheduled_task.toml
 ./behavior/rules/linux/persistence_unusual_ssh_parent_child_execution.toml
@@ -317,7 +319,6 @@
 ./behavior/rules/macos/command_and_control_osascript_download_cradle_spawned.toml
 ./behavior/rules/macos/command_and_control_osascript_payload_drop_and_execute.toml
 ./behavior/rules/macos/command_and_control_potential_payload_download_via_applescript_applet.toml
-./behavior/rules/macos/command_and_control_potential_wizardupdate_malware_infection.toml
 ./behavior/rules/macos/command_and_control_potential_xcsset_malware_infection.toml
 ./behavior/rules/macos/command_and_control_python_outbound_network_connection_over_ftp.toml
 ./behavior/rules/macos/command_and_control_shlayer_malware_infection.toml
@@ -440,7 +441,6 @@
 ./behavior/rules/macos/execution_abnormal_auval_child_process_execution.toml
 ./behavior/rules/macos/execution_abnormally_large_javascript_evaluation_via_nodejs.toml
 ./behavior/rules/macos/execution_abnormally_large_shell_script_execution_via_perl.toml
-./behavior/rules/macos/execution_arbitrary_python_code_execution_via_nodejs.toml
 ./behavior/rules/macos/execution_background_process_execution_via_shell.toml
 ./behavior/rules/macos/execution_cocoa_applet_binary_execution.toml
 ./behavior/rules/macos/execution_code_editor_untrusted_or_unsigned_child_process_execution.toml
@@ -540,6 +540,7 @@
 ./behavior/rules/macos/initial_access_potential_clickfix_attack_via_base64_decoded_payload.toml
 ./behavior/rules/macos/initial_access_potential_execution_via_vs_code_tasks.toml
 ./behavior/rules/macos/initial_access_potential_terminalfix_attack_via_remote_base64_encoded_payload.toml
+./behavior/rules/macos/initial_access_shell_or_suspicious_process_spawned_by_ray_worker.toml
 ./behavior/rules/macos/initial_access_suspicious_execution_via_script_editor.toml
 ./behavior/rules/macos/lateral_movement_potential_kerberos_attack_via_bifrost.toml
 ./behavior/rules/macos/persistence_at_job_creation_or_modification_via_shell_command.toml
@@ -1218,7 +1219,6 @@
 ./behavior/rules/windows/lateral_movement_unexpected_smb_connection_from_user_mode_process.toml
 ./behavior/rules/windows/lateral_movement_unsigned_file_execution_via_network_logon.toml
 ./behavior/rules/windows/lateral_movement_unusual_remote_desktop_client_process.toml
-./behavior/rules/windows/persistence_browser_native_messaging_registry_modification.toml
 ./behavior/rules/windows/persistence_chromium_extension_loaded_from_unusual_parent.toml
 ./behavior/rules/windows/persistence_component_object_model_registry_modification_by_a_low_reputation_process.toml
 ./behavior/rules/windows/persistence_dual_persistence_via_startup_and_scheduled_task.toml
